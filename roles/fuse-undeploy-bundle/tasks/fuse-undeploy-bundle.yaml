@@ -1,0 +1,9 @@
+---
+- name: Removing Applications from {{ FUSE_HOME }}/deploy folder
+  become_user: "{{ user['name'] }}"
+  file:
+    path: "{{ FUSE_HOME }}/deploy/{{ item.artifactId }}-{{ item.version }}.jar"
+    state: absent
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items: '{{ applications_undeploy }}'

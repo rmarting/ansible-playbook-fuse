@@ -1,0 +1,89 @@
+# Fuse Version and Patch
+fuse:
+    version: '6.3.0'
+    patch: '254'
+
+# OS User to install/execute Fuse
+user:
+  name: 'fuse'
+  shell: '/bin/bash'
+  homedir: 'True'
+
+# OS Global Variables
+
+# Java Home
+JAVA_HOME: /usr/lib/jvm/jre-1.8.0-openjdk
+
+# Fuse Home
+FUSE_HOME: '/opt/fuse/latest-{{ esb_name }}'
+
+# Applications Home
+APP_HOME: '/opt/fuse/applications'
+
+# Fuse Administrative Users
+fuse_users:
+  -
+    username: admin
+    password: karaf
+    roles:
+      - Administrator
+  -
+    username: deployer
+    password: deployer
+    roles:
+      - Deployer
+  -
+    username: guest
+    password: guest
+    roles:
+      - viewer
+  -
+    username: amq
+    password: karaf
+    roles:
+      - Administrator
+
+# Network of Brokers
+network_of_brokers: rhel7jboss01:61616,rhel7jboss02:61616,rhel7jboss03:61616
+
+nof:
+  -
+    host: rhel7jboss01:61616
+  -
+    host: rhel7jboss02:61616
+  -
+    host: rhel7jboss03:61616
+
+
+# Maven Repository
+maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
+
+# Application List to deploy
+applications:
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-consumer
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-producer
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-forwarder
+    version: 1.1.0-SNAPSHOT
+
+# Application List to undeploy
+applications_undeploy:
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-consumer
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-producer
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.camel
+    artifactId: camel-amq-forwarder
+    version: 1.1.0-SNAPSHOT

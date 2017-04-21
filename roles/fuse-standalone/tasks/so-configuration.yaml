@@ -1,0 +1,27 @@
+---
+- name: Grant RHEL and Fuse repos enabled
+  shell: subscription-manager repos --enable=rhel-7-server-rpms
+  register: repo_enabled
+  failed_when: "repo_enabled.rc != 0"
+
+- name: Create user for Fuse
+  user:
+    name: "{{ user['name'] }}"
+    shell: "{{user['shell'] if user['shell'] is defined else '/sbin/nologin'}}"
+    createhome: "{{'yes' if user['homedir'] else 'no'}}"
+
+- name: Install Requirements and Dependencies
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - unzip
+    - java-1.8.0-openjdk
+    - vim
+
+- name: Configure java security
+  lineinfile:
+    dest='{{ JAVA_HOME }}/lib/security/java.security'
+    regexp='^securerandom.source='
+    line='securerandom.source=file:/dev/./urandom'
+    state=present

@@ -1,0 +1,12 @@
+---
+- name: Removing Applications from {{ FUSE_HOME }}/deploy folder
+  become: yes
+  become_user: "{{ user['name'] }}"
+  become_method: sudo
+  copy:
+    src: "{{ APP_HOME }}/{{ item.artifactId }}-{{ item.version }}.jar"
+    remote_src: True
+    dest: "{{ FUSE_HOME }}/deploy"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items: '{{ applications }}'

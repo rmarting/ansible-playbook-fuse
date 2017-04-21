@@ -1,0 +1,84 @@
+---
+- name: Set up Fuse System Properties
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/system.properties"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'system.properties.j2'
+
+- name: Set up Apache Karaf's JMX Management
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.management.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'org.apache.karaf.management.cfg.j2'
+
+- name: Set up Apache Karaf's ssh shell.
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.shell.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'org.apache.karaf.shell.cfg.j2'
+
+- name: Set up Jetty Web Server
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/org.ops4j.pax.web.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'org.ops4j.pax.web.cfg.j2'
+
+- name: Set up A-MQ server broker configuration
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/io.fabric8.mq.fabric.server-broker.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'io.fabric8.mq.fabric.server-broker.cfg.j2'
+
+- name: Set up A-MQ Broker
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/activemq.xml"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'activemq.xml.j2'
+
+- name: Set up Custom Properties
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/custom.properties"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'custom.properties.j2'
+
+# TODO Define mode to set up a Network of Brokers
+# - name: Create Network of Brokers
+  # blockinfile:
+    # path: "{{ FUSE_HOME }}/etc/activemq.xml"
+    # marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+    # insertbefore: "</broker>"
+    # content: |
+      # <networkConnectors>
+        # <networkConnector uri="static:({{ 'tcp://' ~ network_of_brokers }})?maxReconnectDelay=5000&useExponentialBackOff=false" />
+      # </networkConnectors>
+#  with_items: "{{ nof }}"
+
+- name: Create Fuse Users
+  become_user: "{{ user['name'] }}"
+  lineinfile:
+    dest: "{{ FUSE_HOME }}/etc/users.properties"
+    regexp: "^(#?){{ item.username }}=(.*)$"
+    line: "{{ item.username ~ '=' ~ item.password ~ ',' ~ item.roles|join(',')}}"
+    insertbefore: EOF
+  with_items: "{{ fuse_users }}"

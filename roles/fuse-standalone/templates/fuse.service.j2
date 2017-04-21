@@ -1,0 +1,19 @@
+[Unit]
+Description=Fuse {{ esb_name }} Standalone
+After=syslog.target network.target
+
+[Service]
+ExecStart={{ FUSE_HOME }}/bin/fuse start
+ExecStop={{ FUSE_HOME }}/bin/fuse stop
+
+User={{ user['name'] }}
+Group={{ user['name'] }}
+
+SuccessExitStatus=0 143
+RestartSec=15
+Restart=on-failure
+
+LimitNOFILE=102642
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,42 @@
+---
+- name: Create Fuse folder
+  file:
+    path: "/opt/fuse/{{ esb_name }}"
+    state: directory
+    mode: 0755
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create Fuse Applications folder
+  file:
+    path: "{{ APP_HOME }}"
+    state: directory
+    mode: 0755
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Install Fuse binaries on Server
+  unarchive:
+    src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
+    dest: "/opt/fuse/{{ esb_name }}"
+    keep_newer: yes
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Link current version to installed version
+  file:
+    src: /opt/fuse/{{ esb_name }}/jboss-fuse-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}
+    dest: /opt/fuse/latest-{{ esb_name }}
+    state: link
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Install systemd unit file
+  template:
+    src: fuse.service.j2
+    dest: /etc/systemd/system/fuse-{{ esb_name }}.service
+    owner: root
+    mode: 644
+  notify:
+    - reload systemd
+    - restart fuse-{{ esb_name }}

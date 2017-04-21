@@ -1,0 +1,6 @@
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: restart fuse
+  service: name=fuse state=restarted
+  

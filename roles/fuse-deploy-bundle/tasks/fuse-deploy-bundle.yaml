@@ -1,0 +1,30 @@
+---
+- name: Downloading Application from Maven Repository
+  become_user: "{{ user['name'] }}"
+  maven_artifact:
+    group_id: '{{ item.groupId }}'
+    artifact_id: '{{ item.artifactId }}'
+    version: '{{ item.version }}'
+    repository_url: '{{ maven_repository_manager }}'
+    dest: '{{ APP_HOME }}/'
+  with_items: '{{ applications }}'
+
+- name: Create Applications Config in {{ FUSE_HOME }}/etc folder
+  become_user: "{{ user['name'] }}"
+  template:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/com.redhat.camel.environment.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'com.redhat.camel.environment.cfg.j2'
+
+- name: Installing Applications in {{ FUSE_HOME }}/deploy folder
+  become_user: "{{ user['name'] }}"
+  copy:
+    src: "{{ APP_HOME }}/{{ item.artifactId }}-{{ item.version }}.jar"
+    remote_src: True
+    dest: "{{ FUSE_HOME }}/deploy"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items: '{{ applications }}'

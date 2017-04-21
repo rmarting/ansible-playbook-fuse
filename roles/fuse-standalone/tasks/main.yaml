@@ -1,0 +1,4 @@
+---
+- include: so-configuration.yaml
+- include: fuse-installation.yaml
+- include: fuse-configuration.yaml

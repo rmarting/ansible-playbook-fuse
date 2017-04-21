@@ -1,0 +1,5 @@
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: restart fuse-{{ esb_name }}
+  service: name=fuse-{{ esb_name }} state=restarted
