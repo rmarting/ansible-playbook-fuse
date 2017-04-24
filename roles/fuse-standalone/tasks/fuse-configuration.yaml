@@ -53,6 +53,15 @@
   with_items:
     - 'io.fabric8.mq.fabric.server-broker.cfg.j2'
 
+- name: Defining Network of Brokers configuration
+  set_fact:
+    nob_discovery_uri: |
+      discoveryUri="multicast://{{ nob_multicast_name }}"
+    nob_connector_uri: |
+      <networkConnector uri="multicast://{{ nob_multicast_name }}" userName="{{ fuse_users.amq.username }}" password="{{ fuse_users.amq.password }}" />
+    nob_defined: true
+  when: (nob is defined and nob == "true")
+
 - name: Set up A-MQ Broker
   template:
     src: "{{ item }}"
@@ -71,23 +80,11 @@
   with_items:
     - 'custom.properties.j2'
 
-# TODO Define mode to set up a Network of Brokers
-# - name: Create Network of Brokers
-  # blockinfile:
-    # path: "{{ FUSE_HOME }}/etc/activemq.xml"
-    # marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
-    # insertbefore: "</broker>"
-    # content: |
-      # <networkConnectors>
-        # <networkConnector uri="static:({{ 'tcp://' ~ network_of_brokers }})?maxReconnectDelay=5000&useExponentialBackOff=false" />
-      # </networkConnectors>
-#  with_items: "{{ nof }}"
-
 - name: Create Fuse Users
   become_user: "{{ user['name'] }}"
   lineinfile:
     dest: "{{ FUSE_HOME }}/etc/users.properties"
-    regexp: "^(#?){{ item.username }}=(.*)$"
-    line: "{{ item.username ~ '=' ~ item.password ~ ',' ~ item.roles|join(',')}}"
+    regexp: "^(#?){{ item.value.username }}=(.*)$"
+    line: "{{ item.value.username ~ '=' ~ item.value.password ~ ',' ~ item.value.roles | join(',') }}"
     insertbefore: EOF
-  with_items: "{{ fuse_users }}"
+  with_dict: "{{ fuse_users }}"

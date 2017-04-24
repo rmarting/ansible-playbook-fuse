@@ -17,43 +17,46 @@ JAVA_HOME: /usr/lib/jvm/jre-1.8.0-openjdk
 # Fuse Home
 FUSE_HOME: '/opt/fuse/latest-{{ esb_name }}'
 
-# Applications Home
-APP_HOME: '/opt/fuse/applications'
-
 # Fuse Administrative Users
 fuse_users:
-  -
-    username: admin
-    password: karaf
-    roles:
-      - Administrator
-  -
-    username: deployer
-    password: deployer
-    roles:
-      - Deployer
-  -
-    username: guest
-    password: guest
-    roles:
-      - viewer
-  -
-    username: amq
-    password: karaf
-    roles:
-      - Administrator
+    admin:
+      username: admin
+      password: karaf
+      roles:
+        - admin
+        - manager
+        - viewer
+        - Monitor
+        - Operator
+        - Maintainer
+        - Deployer
+        - Auditor
+        - Administrator
+        - SuperUser
+    deployer:
+      username: deployer
+      password: deployer
+      roles:
+        - Deployer
+    guest:
+      username: guest
+      password: guest
+      roles:
+        - viewer
+    amq:
+      username: amq
+      password: karaf
+      roles:
+        - viewer
+        - Administrator
 
-# Network of Brokers
-network_of_brokers: rhel7jboss01:61616,rhel7jboss02:61616,rhel7jboss03:61616
+# Network of Brokers Multicast
+nob_multicast_name: default
 
-nof:
-  -
-    host: rhel7jboss01:61616
-  -
-    host: rhel7jboss02:61616
-  -
-    host: rhel7jboss03:61616
+## Setup for Applications and Bundles
 
+# Applications Home
+APP_HOME: '/opt/fuse/applications'
 
 # Maven Repository
 maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
