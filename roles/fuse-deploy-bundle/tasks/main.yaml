@@ -1,3 +1,2 @@
 ---
-# - include: fuse-undeploy-bundle.yaml
 - include: fuse-deploy-bundle.yaml
