@@ -35,6 +35,15 @@
   with_items:
     - 'org.ops4j.pax.web.cfg.j2'
 
+- name: Set up Karaf's Features
+  copy:
+    src: "{{ item }}"
+    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.features.cfg"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - "org.apache.karaf.features-{{ esb_type | default('full') }}.cfg"
+
 - name: Set up A-MQ server broker configuration
   template:
     src: "{{ item }}"
