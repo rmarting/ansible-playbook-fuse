@@ -45,9 +45,9 @@ These variables are:
 These variables should be defined in the playbook as:
 
 		roles:
-					# Two Fuse Standalone with a Network of Brokers
-					- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-					- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+			# Two Fuse Standalone with a Network of Brokers
+			- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
+			- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
 
 ### fuse-standalone role
 
@@ -72,16 +72,16 @@ Role's execution could be configured with the following variables.
 
 		# Fuse Version and Patch
 		fuse:
-				version: '6.3.0'
-				patch: '254'
+			version: '6.3.0'
+			patch: '254'
 
 * **user**: OS user to execute the Fuse process.
 
 		# OS User to install/execute Fuse
 		user:
-		  name: 'fuse'
-		  shell: '/bin/bash'
-		  homedir: 'True'
+			name: 'fuse'
+			shell: '/bin/bash'
+			homedir: 'True'
 
 * **JAVA_HOME**: Path to Java Virtual Machine to execute the process.
 
@@ -100,12 +100,12 @@ Role's execution could be configured with the following variables.
 
 		# Fuse Administrative Users
 		fuse_users:
-		    admin:
-		      username: admin
-		      password: karaf
-		      roles:
-		        - admin
-		        - SuperUser
+			admin:
+				username: admin
+				password: karaf
+				roles:
+					- admin
+					- SuperUser
 
 * **nob_multicast_name**: Multicast cluster name to create the Network of Brokers.
 
@@ -169,6 +169,11 @@ The main tasks done are:
 
 Role's execution could be configured with the following variables.
 
+* **APP_HOME**: Location to store the applications to be deployed before to do it.
+
+		# Applications Home
+		APP_HOME: '/opt/fuse/applications'
+
 * **maven_repository_manager**: Maven Repository location to resolve the artifacts
 	to be deployed.
 
@@ -180,18 +185,18 @@ Role's execution could be configured with the following variables.
 
 		# Application List to deploy
 		applications:
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-consumer
-		    version: 1.1.0-SNAPSHOT
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-producer
-		    version: 1.1.0-SNAPSHOT
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-forwarder
-		    version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-consumer
+				version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-producer
+				version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-forwarder
+				version: 1.1.0-SNAPSHOT
 
 ##### Example playbook
 
@@ -210,17 +215,17 @@ Playbook (*fuse-deploy-bundle.yaml* file):
 
 		---
 		- name: Fuse Deploy Bundles Playbook
-		  hosts: fuse-lab-environment
-		  serial: 1
-		  remote_user: root
-		  gather_facts: true
-		  become: yes
-		  become_user: root
-		  become_method: sudo
-		  roles:
-		        # Deploying Bundles in Two Fuse Standalone
-		        - { role: fuse-deploy-bundle, esb_name: 'esb01' }
-		        - { role: fuse-deploy-bundle, esb_name: 'esb02' }
+			hosts: fuse-lab-environment
+			serial: 1
+			remote_user: root
+			gather_facts: true
+			become: yes
+			become_user: root
+			become_method: sudo
+			roles:
+				# Deploying Bundles in Two Fuse Standalone
+				- { role: fuse-deploy-bundle, esb_name: 'esb01' }
+				- { role: fuse-deploy-bundle, esb_name: 'esb02' }
 
 ### fuse-undeploy-bundle role
 
@@ -245,18 +250,18 @@ Role's execution could be configured with the following variables.
 
 		# Application List to undeploy
 		applications_undeploy:
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-consumer
-		    version: 1.1.0-SNAPSHOT
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-producer
-		    version: 1.1.0-SNAPSHOT
-		  -
-		    groupId: com.redhat.camel
-		    artifactId: camel-amq-forwarder
-		    version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-consumer
+				version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-producer
+				version: 1.1.0-SNAPSHOT
+			-
+				groupId: com.redhat.camel
+				artifactId: camel-amq-forwarder
+				version: 1.1.0-SNAPSHOT
 
 ##### Example playbook
 
@@ -275,17 +280,17 @@ Playbook (*fuse-undeploy-bundle.yaml* file):
 
 		---
 		- name: Fuse Undeploy Bundles Playbook
-		  hosts: fuse-lab-environment
-		  serial: 1
-		  remote_user: root
-		  gather_facts: true
-		  become: yes
-		  become_user: root
-		  become_method: sudo
-		  roles:
-		        # Undeploying Bundles in Two Fuse Standalone
-		        - { role: fuse-undeploy-bundle, esb_name: 'esb01' }
-		        - { role: fuse-undeploy-bundle, esb_name: 'esb02' }
+			hosts: fuse-lab-environment
+			serial: 1
+			remote_user: root
+			gather_facts: true
+			become: yes
+			become_user: root
+			become_method: sudo
+			roles:
+				# Undeploying Bundles in Two Fuse Standalone
+				- { role: fuse-undeploy-bundle, esb_name: 'esb01' }
+				- { role: fuse-undeploy-bundle, esb_name: 'esb02' }
 
 # Main References
 
