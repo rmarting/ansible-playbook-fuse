@@ -1,3 +1,4 @@
+---
 - name: Fuse Standalone Playbook
   hosts: fuse-lab-environment
   serial: 1
