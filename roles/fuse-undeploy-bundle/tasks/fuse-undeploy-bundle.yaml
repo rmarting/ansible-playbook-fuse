@@ -1,5 +1,5 @@
 ---
-- name: Removing Applications from {{ FUSE_HOME }}/deploy folder
+- name: Remove Applications from {{ FUSE_HOME }}/deploy folder
   become_user: "{{ user['name'] }}"
   file:
     path: "{{ FUSE_HOME }}/deploy/{{ item.artifactId }}-{{ item.version }}.jar"
@@ -7,3 +7,13 @@
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items: '{{ applications_undeploy }}'
+
+- name: Uninstall Features
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'features:uninstall {{ item.name }}'"
+  with_items: '{{ features_undeploy }}'
+
+- name: Uninstall Feature Repositories
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'features:removeurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
+  with_items: '{{ features_undeploy }}'

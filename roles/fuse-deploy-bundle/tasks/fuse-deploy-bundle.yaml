@@ -1,12 +1,12 @@
 ---
-- name: Downloading Application from Maven Repository
+- name: Download Application from Maven Repository
   become_user: "{{ user['name'] }}"
   maven_artifact:
     group_id: '{{ item.groupId }}'
     artifact_id: '{{ item.artifactId }}'
     version: '{{ item.version }}'
     repository_url: '{{ maven_repository_manager }}'
-    dest: '{{ APP_HOME }}/'
+    dest: '{{ app_home }}/'
   with_items: '{{ applications }}'
 
 - name: Create Applications Config in {{ FUSE_HOME }}/etc folder
@@ -19,12 +19,22 @@
   with_items:
     - 'com.redhat.camel.environment.cfg.j2'
 
-- name: Installing Applications in {{ FUSE_HOME }}/deploy folder
+- name: Install Applications in {{ FUSE_HOME }}/deploy folder
   become_user: "{{ user['name'] }}"
   copy:
-    src: "{{ APP_HOME }}/{{ item.artifactId }}-{{ item.version }}.jar"
+    src: "{{ app_home }}/{{ item.artifactId }}-{{ item.version }}.jar"
     remote_src: True
     dest: "{{ FUSE_HOME }}/deploy"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items: '{{ applications }}'
+
+- name: Install Feature Repositories
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'features:addurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
+  with_items: '{{ features }}'
+
+- name: Install Features
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'features:install {{ item.name }}'"
+  with_items: '{{ features }}'

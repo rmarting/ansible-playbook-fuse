@@ -164,15 +164,17 @@ The main tasks done are:
 
 * Download artifacts from a Maven Repository Manager
 * Copy artifacts into **{{ FUSE_HOME }}/deploy** folder
+* Install Features repositories (URL)
+* Install Features from URL list of repositories
 
 #### Configuration parameters
 
 Role's execution could be configured with the following variables.
 
-* **APP_HOME**: Location to store the applications to be deployed before to do it.
+* **app_home**: Location to store the applications to be deployed before to do it.
 
 		# Applications Home
-		APP_HOME: '/opt/fuse/applications'
+		app_home: '/opt/fuse/applications'
 
 * **maven_repository_manager**: Maven Repository location to resolve the artifacts
 	to be deployed.
@@ -197,6 +199,17 @@ Role's execution could be configured with the following variables.
 				groupId: com.redhat.camel
 				artifactId: camel-amq-forwarder
 				version: 1.1.0-SNAPSHOT
+
+* **features**: List of Features to be deployed. The artifacts should
+	be located using their GAV coordinates. The *name* attribute defines the
+	name of the feature to install from the list url defined by the GAV coordinates
+
+		features:
+			-
+				groupId: com.redhat.fuse.demo
+				artifactId: fuse-demo-features
+				version: 1.1.0-SNAPSHOT
+				name: fuse-demo-features
 
 ##### Example playbook
 
@@ -234,6 +247,8 @@ This role undeploys several Application Bundles from a set of Fuse Standalone in
 The main tasks done are:
 
 * Remove artifacts from **{{ FUSE_HOME }}/deploy** folder
+* Uninstall Features from URL list of repositories
+* Uninstall Features repositories (URL)
 
 #### Configuration parameters
 
@@ -245,7 +260,7 @@ Role's execution could be configured with the following variables.
 		# Maven Repository
 		maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
 
-* **applications**: List of Maven dependencies to be deployed. The artifacts should
+* **applications_undeploy**: List of Maven dependencies to be undeployed. The artifacts should
 	be located using their GAV coordinates.
 
 		# Application List to undeploy
@@ -262,6 +277,15 @@ Role's execution could be configured with the following variables.
 				groupId: com.redhat.camel
 				artifactId: camel-amq-forwarder
 				version: 1.1.0-SNAPSHOT
+
+* **features_undeploy**: List of Maven dependencies to be undeployed.
+
+		features_undeploy:
+			-
+				groupId: com.redhat.fuse.demo
+				artifactId: fuse-demo-features
+				version: 1.1.0-SNAPSHOT
+				name: fuse-demo-features
 
 ##### Example playbook
 

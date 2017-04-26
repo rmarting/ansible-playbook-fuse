@@ -1,6 +1,6 @@
 ---
 - name: Fuse Undeploy Bundles Playbook
-  hosts: fuse-lab-environment
+  hosts: fuse-lab-os1
   serial: 1
   remote_user: root
   gather_facts: true
@@ -8,6 +8,6 @@
   become_user: root
   become_method: sudo
   roles:
-        # Undeploying Bundles in Two Fuse Standalone
-        - { role: fuse-undeploy-bundle, esb_name: 'esb01' }
-        - { role: fuse-undeploy-bundle, esb_name: 'esb02' }
+    # Undeploying Bundles in Two Fuse Standalone
+    - { role: fuse-undeploy-bundle, esb_name: 'esb01' }
+    - { role: fuse-undeploy-bundle, esb_name: 'esb02' }

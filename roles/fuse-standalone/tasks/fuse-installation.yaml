@@ -9,7 +9,7 @@
 
 - name: Create Fuse Applications folder
   file:
-    path: "{{ APP_HOME }}"
+    path: "{{ app_home }}"
     state: directory
     mode: 0755
     owner: "{{ user['name'] }}"

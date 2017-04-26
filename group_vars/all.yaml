@@ -1,7 +1,7 @@
 # Fuse Version and Patch
 fuse:
-    version: '6.3.0'
-    patch: '254'
+  version: '6.3.0'
+  patch: '254'
 
 # OS User to install/execute Fuse
 user:
@@ -19,47 +19,52 @@ FUSE_HOME: '/opt/fuse/latest-{{ esb_name }}'
 
 # Fuse Administrative Users
 fuse_users:
-    admin:
-      username: admin
-      password: karaf
-      roles:
-        - admin
-        - manager
-        - viewer
-        - Monitor
-        - Operator
-        - Maintainer
-        - Deployer
-        - Auditor
-        - Administrator
-        - SuperUser
-    deployer:
-      username: deployer
-      password: deployer
-      roles:
-        - Deployer
-    guest:
-      username: guest
-      password: guest
-      roles:
-        - viewer
-    amq:
-      username: amq
-      password: karaf
-      roles:
-        - viewer
-        - Administrator
+  admin:
+    username: admin
+    password: karaf
+    roles:
+      - admin
+      - manager
+      - viewer
+      - Monitor
+      - Operator
+      - Maintainer
+      - Deployer
+      - Auditor
+      - Administrator
+      - SuperUser
+  deployer:
+    username: deployer
+    password: deployer
+    roles:
+      - Deployer
+  guest:
+    username: guest
+    password: guest
+    roles:
+      - viewer
+  amq:
+    username: amq
+    password: karaf
+    roles:
+      - viewer
+      - Administrator
 
 # Network of Brokers Multicast
 nob_multicast_name: default
 
 ## Setup for Applications and Bundles
 
+fuse_client: '{{ FUSE_HOME }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
+
 # Applications Home
-APP_HOME: '/opt/fuse/applications'
+app_home: '/opt/fuse/applications'
 
 # Maven Repository
-maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
+maven_repository_manager: http://10.3.8.173:8081/nexus/content/groups/public
+
+# Camel A-MQ Samples from https://github.com/rmarting/camel-amq-samples/tree/karaf-fuse-6.3.0
+# Camel CXF Samples from https://github.com/rmarting/fuse-demo/tree/karaf-fuse-6.3.0
 
 # Application List to deploy
 applications:
@@ -75,6 +80,23 @@ applications:
     groupId: com.redhat.camel
     artifactId: camel-amq-forwarder
     version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: camel-cxfrs
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: camel-cxf
+    version: 1.1.0-SNAPSHOT
+
+# Features to Install
+
+features:
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: fuse-demo-features
+    version: 1.1.0-SNAPSHOT
+    name: fuse-demo-features
 
 # Application List to undeploy
 applications_undeploy:
@@ -90,3 +112,20 @@ applications_undeploy:
     groupId: com.redhat.camel
     artifactId: camel-amq-forwarder
     version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: camel-cxfrs
+    version: 1.1.0-SNAPSHOT
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: camel-cxf
+    version: 1.1.0-SNAPSHOT
+
+# Features to Uninstall
+
+features_undeploy:
+  -
+    groupId: com.redhat.fuse.demo
+    artifactId: fuse-demo-features
+    version: 1.1.0-SNAPSHOT
+    name: fuse-demo-features
