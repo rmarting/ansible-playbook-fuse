@@ -1,7 +1,7 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [0.0.3] - 28/04/2017 - Second Release
+## [0.0.3] - 28/04/2017 - Third Release
 ### Added
   * Deploy bundles using *osgi:install* commands
   * Undeploy bundles using *osgi:uninstall* commands
