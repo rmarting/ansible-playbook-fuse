@@ -17,3 +17,8 @@
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'features:removeurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
   with_items: '{{ features_undeploy }}'
+
+- name: Uninstall Bundles
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'osgi:uninstall {{ item.groupId }}.{{ item.artifactId }}/{{ item.version | regex_replace('-', '.')}}'"
+  with_items: '{{ bundles_undeploy }}'

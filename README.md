@@ -16,6 +16,7 @@ Red Hat JBoss Fuse environment and automate the most common tasks.
 This playbook has tested with the next Ansible versions:
 
 		ansible 2.2.1.0
+		ansible 2.3.0.0
 
 The playbook has to be executed with **root permission**, using the **root user** or
 via **sudo** because it will install packages and configure the hosts.
@@ -144,6 +145,7 @@ Playbook (*fuse-install.yaml* file):
 				- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
 
 Other alternatives:
+
 * Two Fuse Standalone without a Network of Brokers:
 
 		roles:
@@ -210,6 +212,21 @@ Role's execution could be configured with the following variables.
 				artifactId: fuse-demo-features
 				version: 1.1.0-SNAPSHOT
 				name: fuse-demo-features
+
+* **bundles**: List of OSGi bundles to be deployed. The artifacts should
+	be located using their GAV coordinates. The *name* attribute defines the
+	name of the bundle to install from the list url defined by the GAV coordinates
+
+		# Bundles List to deploy
+		bundles:
+			-
+		  	groupId: com.redhat.fuse.demo
+		  	artifactId: camel-cxfrs
+		  	version: 1.1.0-SNAPSHOT
+		  -
+		  	groupId: com.redhat.fuse.demo
+		  	artifactId: camel-cxf
+		  	version: 1.1.0-SNAPSHOT
 
 ##### Example playbook
 
@@ -286,6 +303,20 @@ Role's execution could be configured with the following variables.
 				artifactId: fuse-demo-features
 				version: 1.1.0-SNAPSHOT
 				name: fuse-demo-features
+
+* **bundles_undeploy**: List of OSGi bundles to be undeployed
+
+		# Bundles List to deploy
+		bundles:
+			-
+				groupId: com.redhat.fuse.demo
+				artifactId: camel-cxfrs
+				version: 1.1.0-SNAPSHOT
+		  -
+				groupId: com.redhat.fuse.demo
+				artifactId: camel-cxf
+				version: 1.1.0-SNAPSHOT
+
 
 ##### Example playbook
 

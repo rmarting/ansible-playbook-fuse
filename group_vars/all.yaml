@@ -61,7 +61,7 @@ fuse_client: '{{ FUSE_HOME }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.usern
 app_home: '/opt/fuse/applications'
 
 # Maven Repository
-maven_repository_manager: http://10.3.8.173:8081/nexus/content/groups/public
+maven_repository_manager: http://nexus:8081/nexus/content/groups/public
 
 # Camel A-MQ Samples from https://github.com/rmarting/camel-amq-samples/tree/karaf-fuse-6.3.0
 # Camel CXF Samples from https://github.com/rmarting/fuse-demo/tree/karaf-fuse-6.3.0
@@ -80,6 +80,9 @@ applications:
     groupId: com.redhat.camel
     artifactId: camel-amq-forwarder
     version: 1.1.0-SNAPSHOT
+
+# Bundles List to deploy
+bundles:
   -
     groupId: com.redhat.fuse.demo
     artifactId: camel-cxfrs
@@ -89,7 +92,7 @@ applications:
     artifactId: camel-cxf
     version: 1.1.0-SNAPSHOT
 
-# Features to Install
+# Features List to deploy
 
 features:
   -
@@ -112,6 +115,9 @@ applications_undeploy:
     groupId: com.redhat.camel
     artifactId: camel-amq-forwarder
     version: 1.1.0-SNAPSHOT
+
+# Bundles List to undeploy
+bundles_undeploy:
   -
     groupId: com.redhat.fuse.demo
     artifactId: camel-cxfrs
@@ -121,7 +127,7 @@ applications_undeploy:
     artifactId: camel-cxf
     version: 1.1.0-SNAPSHOT
 
-# Features to Uninstall
+# Features List to undeploy
 
 features_undeploy:
   -

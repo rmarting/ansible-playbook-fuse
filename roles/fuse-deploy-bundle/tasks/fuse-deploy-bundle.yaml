@@ -38,3 +38,8 @@
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'features:install {{ item.name }}'"
   with_items: '{{ features }}'
+
+- name: Install Bundles
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'osgi:install -s mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}'"
+  with_items: '{{ bundles }}'

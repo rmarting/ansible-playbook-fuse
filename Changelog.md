@@ -33,7 +33,22 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 ### Pending
+  * Handlers to refresh URL feature repositories in runtime
+  * Apply some Ansible best practices
+
+## [0.0.3] - 28/04/2017 - Second Release
+### Added
   * Deploy bundles using *osgi:install* commands
   * Undeploy bundles using *osgi:uninstall* commands
+  * New Ansible versions tested
+
+### Changed
+  * Playbooks: fuse-deploy-bundle.yaml, fuse-undeploy-bundle.yaml
+  * Documentation
+
+### Removed
+
+### Pending
   * Handlers to refresh URL feature repositories in runtime
+  * Role to check health and status of each Fuse instance. Apply restart actions.
   * Apply some Ansible best practices

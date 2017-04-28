@@ -1,8 +1,7 @@
 ---
 - name: Fuse Deploy Bundles Playbook
   hosts: fuse-lab-os1
-  serial: 1
-  remote_user: root
+  remote_user: cloud-user
   gather_facts: true
   become: yes
   become_user: root
