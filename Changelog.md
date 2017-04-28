@@ -1,19 +1,22 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [0.0.1] - 24/04/2017 - First Release
+## [0.0.3] - 28/04/2017 - Second Release
 ### Added
-  * Initial version
-  * Roles created: fuse-standalone, fuse-deploy-bundle, fuse-undeploy-bundle
-  * Global variables in *groups_vars* folder
-  * Playbooks: fuse-install, fuse-cd-apps
-  * Documentation
+  * Deploy bundles using *osgi:install* commands
+  * Undeploy bundles using *osgi:uninstall* commands
+  * New Ansible versions tested
 
 ### Changed
+  * Playbooks: fuse-deploy-bundle.yaml, fuse-undeploy-bundle.yaml
+  * Documentation
 
 ### Removed
 
 ### Pending
+  * Handlers to refresh URL feature repositories in runtime
+  * Role to check health and status of each Fuse instance. Apply restart actions.
+  * Apply some Ansible best practices
 
 ## [0.0.2] - 27/04/2017 - Second Release
 ### Added
@@ -36,19 +39,16 @@ All notable changes to this project will be documented in this file.
   * Handlers to refresh URL feature repositories in runtime
   * Apply some Ansible best practices
 
-## [0.0.3] - 28/04/2017 - Second Release
+## [0.0.1] - 24/04/2017 - First Release
 ### Added
-  * Deploy bundles using *osgi:install* commands
-  * Undeploy bundles using *osgi:uninstall* commands
-  * New Ansible versions tested
+  * Initial version
+  * Roles created: fuse-standalone, fuse-deploy-bundle, fuse-undeploy-bundle
+  * Global variables in *groups_vars* folder
+  * Playbooks: fuse-install, fuse-cd-apps
+  * Documentation
 
 ### Changed
-  * Playbooks: fuse-deploy-bundle.yaml, fuse-undeploy-bundle.yaml
-  * Documentation
 
 ### Removed
 
 ### Pending
-  * Handlers to refresh URL feature repositories in runtime
-  * Role to check health and status of each Fuse instance. Apply restart actions.
-  * Apply some Ansible best practices

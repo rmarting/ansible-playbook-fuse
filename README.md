@@ -11,6 +11,8 @@ a set of different roles:
 These roles with the right configuration will allow you to deploy a full complex
 Red Hat JBoss Fuse environment and automate the most common tasks.
 
+[Change Log](./Changelog.md)
+
 ## Ansible Requirements
 
 This playbook has tested with the next Ansible versions:
