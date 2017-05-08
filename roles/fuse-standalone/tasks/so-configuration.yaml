@@ -1,8 +1,8 @@
 ---
-- name: Grant RHEL and Fuse repos enabled
-  shell: subscription-manager repos --enable=rhel-7-server-rpms
-  register: repo_enabled
-  failed_when: "repo_enabled.rc != 0"
+#- name: Grant RHEL and Fuse repos enabled
+#  shell: subscription-manager repos --enable=rhel-7-server-rpms
+#  register: repo_enabled
+#  failed_when: "repo_enabled.rc != 0"
 
 - name: Create user for Fuse
   user:
