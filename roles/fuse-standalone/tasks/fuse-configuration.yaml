@@ -93,8 +93,8 @@
 
 - name: Unsetting Network of Brokers configuration
   set_fact:
-    nob_discovery_uri: default("")
-    nob_connector_uri: default("")
+    nob_discovery_uri: ""
+    nob_connector_uri: ""
     nob_defined: false
   when: (nob is undefined) or (nob is defined and nob == "false")
 
