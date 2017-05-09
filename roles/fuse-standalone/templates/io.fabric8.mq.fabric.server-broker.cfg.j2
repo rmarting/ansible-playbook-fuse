@@ -16,7 +16,11 @@
 
 broker-name=amq-{{ ansible_hostname }}-{{ esb_name }}
 standalone=true
+{% if amq_master_slave is defined and amq_master_slave == 'true' %}
+data={{ kahadb_directory }}/amq
+{% else %}
 data=${karaf.data}/amq
+{% endif %}
 config=file\:etc/activemq.xml
 connectors=openwire
 group=default

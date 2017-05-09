@@ -6,3 +6,9 @@ rhel7jboss03
 [fuse-lab-os1]
 10.3.9.91
 10.3.9.123
+
+[fuse-lab-os1-server-one]
+10.3.9.91
+
+[fuse-lab-os1-server-two]
+10.3.9.123
