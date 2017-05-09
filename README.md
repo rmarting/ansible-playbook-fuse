@@ -5,6 +5,7 @@ This [Ansible Playbook](http://docs.ansible.com/ansible/playbooks.html) includes
 a set of different roles:
 
 * **fuse-standalone**: Deploys a set of Red Hat JBoss Fuse Standalone instances on several hosts.
+* **fuse-uninstall**: Uninstall a set of Red Hat JBoss Fuse Standalone instances from several hosts.
 * **fuse-deploy-bundle**: Deploys a set of Application Bundles on several hosts.
 * **fuse-undeploy-bundle**: Undeploys a set of Application Bundles on several hosts.
 
