@@ -2,7 +2,7 @@
 - name: Set up Fuse System Properties
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/system.properties"
+    dest: "{{ fuse_home }}/etc/system.properties"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -11,7 +11,7 @@
 - name: Set up Apache Karaf's JMX Management
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.management.cfg"
+    dest: "{{ fuse_home }}/etc/org.apache.karaf.management.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -20,7 +20,7 @@
 - name: Set up Apache Karaf's ssh shell.
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.shell.cfg"
+    dest: "{{ fuse_home }}/etc/org.apache.karaf.shell.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -29,7 +29,7 @@
 - name: Set up Jetty Web Server
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/org.ops4j.pax.web.cfg"
+    dest: "{{ fuse_home }}/etc/org.ops4j.pax.web.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -43,7 +43,7 @@
 - name: Set up Karaf's Features
   copy:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/org.apache.karaf.features.cfg"
+    dest: "{{ fuse_home }}/etc/org.apache.karaf.features.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -58,7 +58,7 @@
 - name: Set up Fabric Maven Agent
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/io.fabric8.maven.cfg"
+    dest: "{{ fuse_home }}/etc/io.fabric8.maven.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -67,7 +67,7 @@
 - name: Set up OPS4J maven Agent
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/org.ops4j.pax.url.mvn.cfg"
+    dest: "{{ fuse_home }}/etc/org.ops4j.pax.url.mvn.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -76,7 +76,7 @@
 - name: Set up A-MQ server broker configuration
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/io.fabric8.mq.fabric.server-broker.cfg"
+    dest: "{{ fuse_home }}/etc/io.fabric8.mq.fabric.server-broker.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -101,7 +101,7 @@
 - name: Set up A-MQ Broker
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/activemq.xml"
+    dest: "{{ fuse_home }}/etc/activemq.xml"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -110,7 +110,7 @@
 - name: Set up Custom Properties
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/custom.properties"
+    dest: "{{ fuse_home }}/etc/custom.properties"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
@@ -119,7 +119,7 @@
 - name: Create Fuse Users
   become_user: "{{ user['name'] }}"
   lineinfile:
-    dest: "{{ FUSE_HOME }}/etc/users.properties"
+    dest: "{{ fuse_home }}/etc/users.properties"
     regexp: "^(#?){{ item.value.username }}=(.*)$"
     line: "{{ item.value.username ~ '=' ~ item.value.password ~ ',' ~ item.value.roles | join(',') }}"
     insertbefore: EOF

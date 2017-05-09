@@ -21,7 +21,7 @@
 
 - name: Configure java security
   lineinfile:
-    dest='{{ JAVA_HOME }}/lib/security/java.security'
+    dest='{{ java_home }}/lib/security/java.security'
     regexp='^securerandom.source='
     line='securerandom.source=file:/dev/./urandom'
     state=present

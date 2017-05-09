@@ -9,22 +9,22 @@
     dest: '{{ app_home }}/'
   with_items: '{{ applications }}'
 
-- name: Create Applications Config in {{ FUSE_HOME }}/etc folder
+- name: Create Applications Config in {{ fuse_home }}/etc folder
   become_user: "{{ user['name'] }}"
   template:
     src: "{{ item }}"
-    dest: "{{ FUSE_HOME }}/etc/com.redhat.camel.environment.cfg"
+    dest: "{{ fuse_home }}/etc/com.redhat.camel.environment.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
     - 'com.redhat.camel.environment.cfg.j2'
 
-- name: Install Applications in {{ FUSE_HOME }}/deploy folder
+- name: Install Applications in {{ fuse_home }}/deploy folder
   become_user: "{{ user['name'] }}"
   copy:
     src: "{{ app_home }}/{{ item.artifactId }}-{{ item.version }}.jar"
     remote_src: True
-    dest: "{{ FUSE_HOME }}/deploy"
+    dest: "{{ fuse_home }}/deploy"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items: '{{ applications }}'

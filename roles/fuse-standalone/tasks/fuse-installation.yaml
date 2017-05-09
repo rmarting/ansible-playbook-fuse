@@ -1,4 +1,12 @@
 ---
+- name: Upload Fuse binaries on Server
+  copy:
+    src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
+    dest: /tmp
+    force: no
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
 - name: Create Fuse folder
   file:
     path: "/opt/fuse/{{ esb_name }}"
@@ -18,7 +26,8 @@
 - name: Install Fuse binaries on Server
   unarchive:
     src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
-    dest: "/opt/fuse/{{ esb_name }}"
+    dest: /opt/fuse/{{ esb_name }}
+    remote_src: true
     keep_newer: yes
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"

@@ -3,8 +3,8 @@ Description=Fuse {{ esb_name }} Standalone
 After=syslog.target network.target
 
 [Service]
-ExecStart={{ FUSE_HOME }}/bin/fuse start
-ExecStop={{ FUSE_HOME }}/bin/fuse stop
+ExecStart={{ fuse_home }}/bin/fuse start
+ExecStop={{ fuse_home }}/bin/fuse stop
 
 User={{ user['name'] }}
 Group={{ user['name'] }}

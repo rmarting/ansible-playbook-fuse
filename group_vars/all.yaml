@@ -12,10 +12,10 @@ user:
 # OS Global Variables
 
 # Java Home
-JAVA_HOME: /usr/lib/jvm/jre-1.8.0-openjdk
+java_home: /usr/lib/jvm/jre-1.8.0-openjdk
 
 # Fuse Home
-FUSE_HOME: '/opt/fuse/latest-{{ esb_name }}'
+fuse_home: '/opt/fuse/latest-{{ esb_name }}'
 
 # Fuse Administrative Users
 fuse_users:
@@ -53,9 +53,12 @@ fuse_users:
 # Network of Brokers Multicast
 nob_multicast_name: default
 
+# KahaDB persistence store
+kahadb_directory: /opt/fuse/kahadb
+
 ## Setup for Applications and Bundles
 
-fuse_client: '{{ FUSE_HOME }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
+fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
 
 # Applications Home
 app_home: '/opt/fuse/applications'
