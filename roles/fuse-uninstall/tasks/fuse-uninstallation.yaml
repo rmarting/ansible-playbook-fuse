@@ -1,0 +1,27 @@
+---
+- name: Stop Fuse Service
+  service:
+    name: fuse-{{ esb_name }}
+    state: stopped
+
+- name: Uninstall systemd unit file
+  file:
+    path: /etc/systemd/system/fuse-{{ esb_name }}.service
+    owner: root
+    state: absent
+  notify:
+    - reload systemd
+
+- name: Remove current version to installed version
+  file:
+    path: /opt/fuse/latest-{{ esb_name }}
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+    state: absent
+
+- name: Uninstall Fuse binaries on Server
+  file:
+    path: /opt/fuse/{{ esb_name }}
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+    state: absent
