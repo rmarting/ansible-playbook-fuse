@@ -1,1 +1,12 @@
-
+---
+- name: Fuse Deploy Bundles Playbook
+  hosts: fuse-vagrant
+  remote_user: root
+  gather_facts: true
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    # Deploying Bundles in Two Fuse Standalone
+    - { role: fuse-deploy-bundle, esb_name: 'esb01' }
+    - { role: fuse-deploy-bundle, esb_name: 'esb02' }
