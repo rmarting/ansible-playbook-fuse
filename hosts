@@ -7,7 +7,3 @@ rhel7jboss03
 10.3.9.91
 10.3.9.123
 
-[fuse-vagrant]
-node1.example.com
-node2.example.com
-node3.example.com
