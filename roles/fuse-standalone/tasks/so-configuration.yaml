@@ -20,9 +20,22 @@
     - java-1.8.0-openjdk
     - vim
 
+- name: Set JAVA_HOME for Fuse user
+  become_user: "{{ user['name'] }}"
+  lineinfile:
+    dest: /home/{{ user['name'] }}/.bash_profile
+    insertafter: 'EOF'
+    state: present
+    regexp: '^export JAVA_HOME'
+    line: 'export JAVA_HOME={{ java_home }}'
+
+- name: Source the bash_profile file
+  become_user: "{{ user['name'] }}"
+  shell: source /home/{{ user['name'] }}/.bash_profile
+
 - name: Configure java security
   lineinfile:
-    dest='{{ java_home }}/lib/security/java.security'
-    regexp='^securerandom.source='
-    line='securerandom.source=file:/dev/./urandom'
-    state=present
+    dest: '{{ java_home }}/lib/security/java.security'
+    regexp: '^securerandom.source='
+    line: 'securerandom.source=file:/dev/./urandom'
+    state: present
