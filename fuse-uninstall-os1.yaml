@@ -1,7 +1,6 @@
 ---
 - name: Uninstall Playbook of a Fuse Standalone Environment
-  hosts: fuse-lab-os1-server-one
-  serial: 1
+  hosts: fuse-lab-os1
   remote_user: cloud-user
   gather_facts: true
   become: yes
