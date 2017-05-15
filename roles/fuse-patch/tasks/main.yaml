@@ -1,0 +1,2 @@
+---
+- include: fuse-patch.yaml

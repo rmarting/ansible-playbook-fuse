@@ -1,0 +1,14 @@
+---
+- name: Patch Playbook of a Fuse Standalone Environment
+  hosts: fuse-lab-os1
+  serial: 2
+  remote_user: cloud-user
+  gather_facts: true
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - { role: fuse-patch, esb_name: 'esb01', port_offset: '0' }
+    - { role: fuse-patch, esb_name: 'esb02', port_offset: '100' }
+    - { role: fuse-patch, esb_name: 'esb03', port_offset: '200' }
+    - { role: fuse-patch, esb_name: 'esb04', port_offset: '300' }

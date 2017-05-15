@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  authors:  Roman Martin Gil (roman.martin@redhat.com)
+  description: Fuse Patch Role
+  company: Red Hat
+  license: TBD
+  min_ansible_version: 2.2.1.0
+  platforms:
+  - name: EL
+    versions:
+    - all
+  galaxy_tags:
+    - fuse
+    - karaf
+dependencies:

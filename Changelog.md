@@ -1,6 +1,23 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 12/05/2017 - Fifth Release
+### Added
+  * New *fuse-patch* role to patch Fuse Standalone instances
+
+### Changed
+  * fuse-standalone playbook
+    * Added JAVA_HOME for Fuse user
+  * Documentation
+
+### Removed
+
+### Pending
+  * Handlers to refresh URL feature repositories in runtime
+  * Role to check health and status of each Fuse instance. Apply restart actions.
+  * Apply some Ansible best practices
+  * Add idempotent actions
+
 ## [0.0.4] - 10/05/2017 - Fourth Release
 ### Added
   * New *fuse-uninstall* role to uninstall Fuse Standalone instances

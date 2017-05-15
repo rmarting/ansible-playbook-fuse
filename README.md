@@ -8,6 +8,7 @@ a set of different roles:
 * **fuse-uninstall**: Uninstall a set of Red Hat JBoss Fuse Standalone instances from several hosts.
 * **fuse-deploy-bundle**: Deploys a set of Application Bundles on several hosts.
 * **fuse-undeploy-bundle**: Undeploys a set of Application Bundles on several hosts.
+* **fuse-patch**: Patch a set of Red Hat JBoss Fuse Standalone instances from several hosts.
 
 These roles with the right configuration will allow you to deploy a full complex
 Red Hat JBoss Fuse environment and automate the most common tasks.
@@ -408,7 +409,6 @@ Playbook (*fuse-undeploy-bundle.yaml* file):
 		---
 		- name: Uninstall Playbook of a Fuse Standalone Environment
 		  hosts: fuse-lab-environment
-		  serial: 1
 		  remote_user: cloud-user
 		  gather_facts: true
 		  become: yes
@@ -419,6 +419,89 @@ Playbook (*fuse-undeploy-bundle.yaml* file):
 		    - { role: fuse-uninstall, esb_name: 'esb02' }
 		    - { role: fuse-uninstall, esb_name: 'esb03' }
 		    - { role: fuse-uninstall, esb_name: 'esb04' }
+
+### fuse-patch role
+
+This role patchs several Fuse Standalone instances in a set of hosts.
+
+The main tasks done are:
+
+* Backup Fuse Standalone instances
+* Install Patch Fuse binaries
+* Simulate and patch Fuse intances with *patch* commands
+
+This process is documented in [Patching a Standalone Container](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/configuring_and_running_jboss_fuse/#ESBRuntimePatchStandalone)
+section of the Red Hat JBoss Fuse Documentation
+
+#### Configuration parameters
+
+Role's execution could be configured with the following variables.
+
+* **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
+	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
+
+		# Fuse Version and Patch
+		fuse:
+		  version: '6.3.0'
+		  patch: '262'
+
+* **fuse_patch**: Define the Red Hat JBoss Fuse version and patch to patch into the
+	current Fuse Instance runnning. This values will form the path the
+	the binaries: */tmp/jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}.zip*
+
+		# Patch Fuse Version and Patch
+		fuse_patch:
+		  version: '6.3.0'
+		  patch: '262'
+
+* **user**: OS user to execute the Fuse process.
+
+		# OS User to install/execute Fuse
+		user:
+			name: 'fuse'
+			shell: '/bin/bash'
+			homedir: 'True'
+
+* **fuse_home**: Fuse Home path where it will installed each instance. This
+	variable will be defined for each host with a name. This allow installs more
+	instances in the same hosts.
+
+		# Fuse Home
+		fuse_home: '/opt/fuse/latest-{{ esb_name }}'
+
+Variables are defined in *group_vars/all.yaml* file.
+
+##### Example playbook
+
+To execute this playbook:
+
+    ansible-playbook -i hosts fuse-patch.yaml
+
+Inventory (*host* file):
+
+		[fuse-lab-environment]
+		rhel7jboss01
+		rhel7jboss02
+		rhel7jboss03
+
+Playbook (*fuse-patch.yaml* file):
+
+		---
+		- name: Patch Playbook of a Fuse Standalone Environment
+			hosts: fuse-lab-os1-server-one
+			serial: 1
+			remote_user: cloud-user
+			gather_facts: true
+			become: yes
+			become_user: root
+			become_method: sudo
+			roles:
+				- { role: fuse-patch, esb_name: 'esb01', port_offset: '0' }
+				- { role: fuse-patch, esb_name: 'esb02', port_offset: '100' }
+				- { role: fuse-patch, esb_name: 'esb03', port_offset: '200' }
+				- { role: fuse-patch, esb_name: 'esb04', port_offset: '300' }
+
+
 
 # Main References
 

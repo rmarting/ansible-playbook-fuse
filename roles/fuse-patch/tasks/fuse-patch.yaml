@@ -1,0 +1,87 @@
+---
+- name: Upload Fuse binaries on Server
+  copy:
+    src: /tmp/jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}.zip
+    dest: /tmp
+    force: no
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Create Fuse Backup folder
+  file:
+    path: "{{ fuse_backup_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Stop Fuse Standalone Service
+  service:
+    name: fuse-{{ esb_name }}
+    state: stopped
+
+- name: Backup current Fuse Standalone Instance
+  archive:
+    path: /opt/fuse/{{ esb_name }}
+    dest: "{{ fuse_backup_path }}/{{ esb_name }}-{{ ansible_date_time.date }}-{{ ansible_date_time.epoch }}.tgz"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
+- name: Started Fuse Standalone Service
+  service:
+    name: fuse-{{ esb_name }}
+    state: started
+
+- name: Verify fuse ssh console
+  wait_for: port={{ (8181|int + port_offset|int)|abs }} host=localhost delay=30
+
+# TODO Patching the patch mechanism (Optional)
+
+# Applying a patch
+
+- name: Add Patch into Fuse Standalone Instance
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'patch:add file:///tmp/jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}.zip'"
+  register: fuse_patch_add_output
+
+- name: Display Fuse Patch Add Command
+  debug:
+    var: fuse_patch_add_output.stdout_lines
+
+- name: Simulate Patch
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'patch:simulate jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
+  register: fuse_patch_simulate_output
+
+# - name: Display Fuse Patch Add Command
+#   debug:
+#     var: fuse_patch_simulate_output
+
+- name: Install Patch
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'patch:install jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
+  register: fuse_patch_install_output.stdout_lines
+
+# - name: Display Fuse Patch Add Command
+#   debug:
+#     var: fuse_patch_install_output
+
+- name: Verify fuse ssh console
+  wait_for: port={{ (8181|int + port_offset|int)|abs }} host=localhost delay=30
+
+- name: Restart Fuse Standalone Service
+  service:
+    name: fuse-{{ esb_name }}
+    state: restarted
+
+- name: Verify fuse ssh console
+  wait_for: port={{ (8181|int + port_offset|int)|abs }} host=localhost delay=30
+
+- name: Validate Patch Installed
+  become_user: "{{ user['name'] }}"
+  command: "{{ fuse_client}} 'patch:list | grep jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}' | grep root"
+  register: fuse_patch_list_output
+
+- name: Display Fuse Patch Installed as root
+  debug:
+    msg: "jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }} installed successfully. Output: {{ fuse_patch_list_output.stdout_lines }}"

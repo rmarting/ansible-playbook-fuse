@@ -3,6 +3,11 @@ fuse:
   version: '6.3.0'
   patch: '254'
 
+# Patch Fuse Version and Patch
+fuse_patch:
+  version: '6.3.0'
+  patch: '262'
+
 # OS User to install/execute Fuse
 user:
   name: 'fuse'
@@ -16,6 +21,9 @@ java_home: /usr/lib/jvm/jre-1.8.0-openjdk
 
 # Fuse Home
 fuse_home: '/opt/fuse/latest-{{ esb_name }}'
+
+# Backups Paths
+fuse_backup_path: /opt/fuse/backup
 
 # Fuse Administrative Users
 fuse_users:
