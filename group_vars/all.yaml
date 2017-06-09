@@ -20,7 +20,8 @@ user:
 java_home: /usr/lib/jvm/jre-1.8.0-openjdk
 
 # Fuse Home
-fuse_home: '/opt/fuse/latest-{{ esb_name }}'
+fuse_base: '/opt/fuse'
+fuse_home: '{{ fuse_base }}latest-{{ esb_name }}'
 
 # Backups Paths
 fuse_backup_path: /opt/fuse/backup
