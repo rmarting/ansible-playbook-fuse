@@ -41,13 +41,13 @@
   when: (esb_type is undefined)
 
 - name: Set up Karaf's Features
-  copy:
+  template:
     src: "{{ item }}"
     dest: "{{ fuse_home }}/etc/org.apache.karaf.features.cfg"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
-    - "org.apache.karaf.features-{{ esb_type | default('full') }}.cfg"
+    - "org.apache.karaf.features-{{ esb_type | default('full') }}.cfg.j2"
 
 - name: Define Maven Repository
   set_fact:

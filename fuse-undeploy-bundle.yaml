@@ -1,7 +1,7 @@
 ---
 - name: Fuse Undeploy Bundles Playbook
-  hosts: fuse-lab-os1
-  remote_user: cloud-user
+  hosts: fuse-lab-environment
+  remote_user: root
   gather_facts: true
   become: yes
   become_user: root

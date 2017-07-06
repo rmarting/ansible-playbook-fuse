@@ -1,12 +1,14 @@
 # Fuse Version and Patch
 fuse:
   version: '6.3.0'
-  patch: '254'
+  patch: '262'
+  maven_version: '630262'
 
 # Patch Fuse Version and Patch
 fuse_patch:
   version: '6.3.0'
   patch: '262'
+  maven_version: '630262'
 
 # OS User to install/execute Fuse
 user:
@@ -21,7 +23,7 @@ java_home: /usr/lib/jvm/jre-1.8.0-openjdk
 
 # Fuse Home
 fuse_base: '/opt/fuse'
-fuse_home: '{{ fuse_base }}latest-{{ esb_name }}'
+fuse_home: '{{ fuse_base }}/latest-{{ esb_name }}'
 
 # Backups Paths
 fuse_backup_path: /opt/fuse/backup
@@ -73,7 +75,7 @@ fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.usern
 app_home: '/opt/fuse/applications'
 
 # Maven Repository
-maven_repository_manager: http://nexus:8081/nexus/content/groups/public
+maven_repository_manager: http://192.168.122.212:8081/nexus/content/groups/public
 
 # Camel A-MQ Samples from https://github.com/rmarting/camel-amq-samples/tree/karaf-fuse-6.3.0
 # Camel CXF Samples from https://github.com/rmarting/fuse-demo/tree/karaf-fuse-6.3.0

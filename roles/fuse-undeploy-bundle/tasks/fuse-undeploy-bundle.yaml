@@ -7,11 +7,15 @@
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items: '{{ applications_undeploy }}'
+  notify:
+    - restart fuse-{{ esb_name }}
 
 - name: Uninstall Features
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'features:uninstall {{ item.name }}'"
   with_items: '{{ features_undeploy }}'
+  notify:
+    - restart fuse-{{ esb_name }}
 
 - name: Uninstall Feature Repositories
   become_user: "{{ user['name'] }}"
@@ -22,3 +26,5 @@
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'osgi:uninstall {{ item.groupId }}.{{ item.artifactId }}/{{ item.version | regex_replace('-', '.')}}'"
   with_items: '{{ bundles_undeploy }}'
+  notify:
+    - restart fuse-{{ esb_name }}

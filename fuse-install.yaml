@@ -1,7 +1,7 @@
 ---
 - name: Fuse Standalone Playbook
   hosts: fuse-lab-environment
-  serial: 1
+  serial: 2
   remote_user: root
   gather_facts: true
   become: yes
@@ -9,8 +9,27 @@
   become_method: sudo
   roles:
     # Two Fuse Standalone with a Network of Brokers
-    - { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-    - { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+    - {
+        role: fuse-install,
+        esb_name: 'esb01',
+        port_offset: '0',
+        nob: 'true',
+        amq_master_slave: 'true'
+      }
+    - {
+        role: fuse-install,
+        esb_name: 'esb02',
+        port_offset: '100',
+        nob: 'true',
+        amq_master_slave: 'true'
+      }
+    #- {
+    #    role: fuse-install,
+    #    esb_name: 'esb03',
+    #    port_offset: '200',
+    #    nob: 'false',
+    #    esb_type: 'noamq'
+    #  }
     # Two Fuse Standalone without a Network of Brokers
     # - { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'false' }
     # - { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'false' }

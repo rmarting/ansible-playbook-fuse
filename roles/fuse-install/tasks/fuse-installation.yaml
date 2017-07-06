@@ -26,7 +26,7 @@
 - name: Install Fuse binaries on Server
   unarchive:
     src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
-    dest: {{ fuse_base }}/{{ esb_name }}
+    dest: '{{ fuse_base }}/{{ esb_name }}'
     remote_src: true
     keep_newer: yes
     owner: "{{ user['name'] }}"
@@ -34,8 +34,8 @@
 
 - name: Link current version to installed version
   file:
-    src: {{ fuse_base }}/{{ esb_name }}/jboss-fuse-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}
-    dest: {{ fuse_base }}/latest-{{ esb_name }}
+    src: "{{ fuse_base }}/{{ esb_name }}/jboss-fuse-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}"
+    dest: '{{ fuse_base }}/latest-{{ esb_name }}'
     state: link
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"

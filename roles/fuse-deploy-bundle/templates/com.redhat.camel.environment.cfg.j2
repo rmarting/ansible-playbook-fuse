@@ -1,19 +1,19 @@
 # Producer
-amq.producer.brokerURL=vm://localhost
+amq.producer.brokerURL=failover:(tcp://localhost:61616,tcp://localhost:61716)
 amq.producer.userName=amq
 amq.producer.password=karaf
 
 # Consumer
-amq.consumer.brokerURL=vm://localhost
+amq.consumer.brokerURL=failover:(tcp://localhost:61616,tcp://localhost:61716)
 amq.consumer.userName=amq
 amq.consumer.password=karaf
 
 # Forwarder
-amq.source.brokerURL=vm://localhost
+amq.source.brokerURL=failover:(tcp://localhost:61616,tcp://localhost:61716)
 amq.source.userName=amq
 amq.source.password=karaf
 
-amq.destination.brokerURL=vm://localhost
+amq.destination.brokerURL=failover:(tcp://localhost:61616,tcp://localhost:61716)
 amq.destination.userName=amq
 amq.destination.password=karaf
 

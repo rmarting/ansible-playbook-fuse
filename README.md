@@ -4,7 +4,7 @@
 This [Ansible Playbook](http://docs.ansible.com/ansible/playbooks.html) includes
 a set of different roles:
 
-* **fuse-standalone**: Deploys a set of Red Hat JBoss Fuse Standalone instances on several hosts.
+* **fuse-install**: Deploys a set of Red Hat JBoss Fuse Standalone instances on several hosts.
 * **fuse-uninstall**: Uninstall a set of Red Hat JBoss Fuse Standalone instances from several hosts.
 * **fuse-deploy-bundle**: Deploys a set of Application Bundles on several hosts.
 * **fuse-undeploy-bundle**: Undeploys a set of Application Bundles on several hosts.
@@ -53,10 +53,10 @@ These variables should be defined in the playbook as:
 
 		roles:
 			# Two Fuse Standalone with a Network of Brokers
-			- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-			- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
+			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
 
-### fuse-standalone role
+### fuse-install role
 
 This role deploys several Fuse Standalone instances in a set of hosts.
 
@@ -154,22 +154,22 @@ Playbook (*fuse-install.yaml* file):
 			become_method: sudo
 			roles:
 				# Two Fuse Standalone with a Network of Brokers
-				- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-				- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+				- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
+				- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
 
 Other alternatives:
 
 * Two Fuse Standalone without a Network of Brokers:
 
 		roles:
-			- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'false' }
-			- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', nob: 'false' }
+			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'false' }
+			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'false' }
 
 * One Fuse Standalone with Full profiles and One Fuse Standalone without A-MQ profile
 
 		roles:
-			- { role: fuse-standalone, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-			- { role: fuse-standalone, esb_name: 'esb02',  port_offset: '100', esb_type: 'noamq' }
+			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
+			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', esb_type: 'noamq' }
 
 ### fuse-deploy-bundle role
 

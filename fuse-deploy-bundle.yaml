@@ -1,12 +1,24 @@
 ---
 - name: Fuse Deploy Bundles Playbook
-  hosts: fuse-lab-os1
-  remote_user: cloud-user
+  hosts: fuse-lab-environment
+  remote_user: root
   gather_facts: true
   become: yes
   become_user: root
   become_method: sudo
   roles:
     # Deploying Bundles in Two Fuse Standalone
-    - { role: fuse-deploy-bundle, esb_name: 'esb01' }
-    - { role: fuse-deploy-bundle, esb_name: 'esb02' }
+    - {
+        role: fuse-deploy-bundle,
+        esb_name: 'esb01',
+        deploy_features: 'no',
+        deploy_bundles: 'no',
+        deploy_applications: 'yes'
+      }
+    - {
+        role: fuse-deploy-bundle,
+        esb_name: 'esb02',
+        deploy_features: 'no',
+        deploy_bundles: 'no',
+        deploy_applications: 'yes'
+      }

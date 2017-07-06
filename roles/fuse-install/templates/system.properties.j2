@@ -30,7 +30,7 @@ org.ops4j.pax.logging.DefaultServiceLog.level = ERROR
 #
 # Name of this Karaf instance.
 #
-karaf.name = root-{{ ansible_hostname }}
+karaf.name = root-{{ ansible_hostname }}-{{ esb_name }}
 
 #
 # Default repository where bundles will be loaded from before using
@@ -209,7 +209,8 @@ servicemix.home=${karaf.home}
 # Activemq configuration
 #
 activemq.port = {{ (61616|int + port_offset|int)|abs }}
-activemq.host = {{ ansible_hostname }}
+# activemq.host = {{ ansible_hostname }}a
+activemq.host = 0.0.0.0
 activemq.url = tcp://${activemq.host}:${activemq.port}
 
 profiles=jboss-fuse-full

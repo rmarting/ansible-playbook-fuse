@@ -8,6 +8,7 @@
     repository_url: '{{ maven_repository_manager }}'
     dest: '{{ app_home }}/'
   with_items: '{{ applications }}'
+  when: applications is defined
 
 - name: Create Applications Config in {{ fuse_home }}/etc folder
   become_user: "{{ user['name'] }}"
@@ -28,18 +29,32 @@
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items: '{{ applications }}'
+  notify:
+    - restart fuse-{{ esb_name }}
+  when: applications is defined and
+        (deploy_applications is defined and deploy_applications == 'yes')
 
-- name: Install Feature Repositories
+- name: Install Feature Repositories in {{ esb_name }}
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'features:addurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
   with_items: '{{ features }}'
+  when: features is defined and
+        (deploy_features is defined and deploy_features == 'yes')
 
-- name: Install Features
+- name: Install Features in {{ esb_name }}
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'features:install {{ item.name }}'"
   with_items: '{{ features }}'
+  notify:
+    - restart fuse-{{ esb_name }}
+  when: features is defined and
+        (deploy_features is defined and deploy_features == 'yes')
 
-- name: Install Bundles
+- name: Install Bundles in {{ esb_name }}
   become_user: "{{ user['name'] }}"
   command: "{{ fuse_client}} 'osgi:install -s mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}'"
   with_items: '{{ bundles }}'
+  notify:
+    - restart fuse-{{ esb_name }}
+  when: bundles is defined and
+        (deploy_bundles is defined and deploy_bundles == 'yes')
