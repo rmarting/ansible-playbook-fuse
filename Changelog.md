@@ -1,6 +1,27 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 07/06/2017 - Sixth Release
+### Added
+  * Identify maven version of the product in some templates using the global
+    variable fuse['maven_version'].
+  * New global variable *fuse_base* to define the base folder to install everything.
+  * New host variables *deploy_features*, *deploy_bundles* and *deploy_applications*
+    to set where the components will be deployed.
+  * Restarting Fuse services if there are deployments done.
+
+### Changed
+  * Renamed *fuse-standalone* role to *fuse-install*
+  * Documentation
+
+### Removed
+
+### Pending
+  * Handlers to refresh URL feature repositories in runtime
+  * Role to check health and status of each Fuse instance. Apply restart actions.
+  * Apply some Ansible best practices
+  * Add idempotent actions
+
 ## [0.0.5] - 12/05/2017 - Fifth Release
 ### Added
   * New *fuse-patch* role to patch Fuse Standalone instances

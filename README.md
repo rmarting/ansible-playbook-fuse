@@ -21,6 +21,7 @@ This playbook has tested with the next Ansible versions:
 
 		ansible 2.2.1.0
 		ansible 2.3.0.0
+		ansible 2.3.1.0
 
 The playbook has to be executed with **root permission**, using the **root user** or
 via **sudo** because it will install packages and configure the hosts.
@@ -31,7 +32,54 @@ This role is prepared to be executed in a RHEL7 Server. Subscription is required
 execute the **Grant RHEL and Fuse repos enabled** task, which enables the required
 repositories to install Fuse dependencies
 
-## Ansible Roles
+## Global and Host Variables
+
+### Global Variables
+
+Each playbook will use a set of Global Variables with values that it will be the same for all of them.
+
+These variables will be defined in **groups_vars/all.yaml** file.
+
+These variables are:
+
+* **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
+	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
+
+		# Fuse Version and Patch
+		fuse:
+			version: '6.3.0'
+			patch: '254'
+			maven_version: '630262'
+
+* **user**: OS user to execute the Fuse process.
+
+		# OS User to install/execute Fuse
+		user:
+			name: 'fuse'
+			shell: '/bin/bash'
+			homedir: 'True'
+
+* **java_home**: Path to Java Virtual Machine to execute the process.
+
+		# Java Home
+		java_home: /usr/lib/jvm/jre-1.8.0-openjdk
+
+* **fuse_base**: Fuse base path where it will be installed everything.
+
+		# Fuse Home
+		fuse_base: '/opt/fuse'
+
+* **fuse_home**: Fuse Home path where it will installed each instance. This
+	variable will be defined for each host with a name. This allow installs more
+	instances in the same hosts.
+
+		# Fuse Home
+		fuse_home: '{{ fuse_base }}/latest-{{ esb_name }}'
+
+* **fuse_client**: Fuse Client command line to connect to a RHJF instance. It will
+ 	use administrative credentials.
+
+		fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
 
 ### Host Variables
 
@@ -42,19 +90,15 @@ These variables are:
 
 * **esb_name**: Logical name to identify each Fuse Instance. Mandatory.
 * **port_offset**: Port offset to be added to default Fuse ports. Mandatory.
-* **nob**: Sets that this instance should be a member of a Network of Brokers. Values: (true|false). Optional.
-* **amq_master_slave**: Sets that this instance will be a member of a A-MQ Master/Slave topology. Values: (true|false). Optional.
-* **esb_type**: Identify each Fuse type. This variable will define the final
-	features needed in this instance. The current values permited:
-	* **full**: Full Fuse instance. Default value.
-	* **noamq**: Disable A-MQ features.
 
 These variables should be defined in the playbook as:
 
 		roles:
 			# Two Fuse Standalone with a Network of Brokers
-			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0' }
+			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100' }
+
+## Ansible Roles
 
 ### fuse-install role
 
@@ -75,33 +119,7 @@ the host where the playbook will be executed.
 
 Role's execution could be configured with the following variables.
 
-* **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
-	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
-
-		# Fuse Version and Patch
-		fuse:
-			version: '6.3.0'
-			patch: '254'
-
-* **user**: OS user to execute the Fuse process.
-
-		# OS User to install/execute Fuse
-		user:
-			name: 'fuse'
-			shell: '/bin/bash'
-			homedir: 'True'
-
-* **java_home**: Path to Java Virtual Machine to execute the process.
-
-		# Java Home
-		java_home: /usr/lib/jvm/jre-1.8.0-openjdk
-
-* **fuse_home**: Fuse Home path where it will installed each instance. This
-	variable will be defined for each host with a name. This allow installs more
-	instances in the same hosts.
-
-		# Fuse Home
-		fuse_home: '/opt/fuse/latest-{{ esb_name }}'
+Global Variables are defined in **group_vars/all.yaml** file.:
 
 * **fuse_users**: Users map to be created in each Fuse instance. These users will
 	be stored in **{{ fuse_home }}/etc/users.properties** file.
@@ -126,9 +144,18 @@ Role's execution could be configured with the following variables.
 		# KahaDB persistence store
 		kahadb_directory: /opt/fuse/kahadb
 
-Variables are defined in *group_vars/all.yaml* file.
+Host Variables are defined in playbook:
 
-##### Example playbook
+* **nob**: Sets that this instance should be a member of a Network of Brokers. Values: (true|false). Optional.
+
+* **amq_master_slave**: Sets that this instance will be a member of a A-MQ Master/Slave topology. Values: (true|false). Optional.
+
+* **esb_type**: Identify each Fuse type. This variable will define the final
+	features needed in this instance. The current values permitted:
+	* **full**: Full Fuse instance. Default value.
+	* **noamq**: Disable A-MQ features.
+
+#### Example playbook
 
 To execute this playbook:
 
@@ -146,8 +173,8 @@ Playbook (*fuse-install.yaml* file):
 		---
 		- name: Fuse Standalone Playbook
 			hosts: fuse-lab-environment
-			serial: 1
-			remote_user: root
+			serial: 2
+			remote_user: cloud-user
 			gather_facts: true
 			become: yes
 			become_user: root
@@ -171,6 +198,50 @@ Other alternatives:
 			- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
 			- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', esb_type: 'noamq' }
 
+### fuse-uninstall role
+
+This role uninstall several Fuse Standalone instances from inventory host.
+
+The main tasks done are:
+
+* Stop Fuse services
+* Remove OS services
+* Remove Fuse binaries
+
+#### Configuration parameters
+
+Role's execution could be configured with the following variables.
+
+This role uses the global variables and host variables defined for
+**fuse-install** role.
+
+#### Example playbook
+
+To execute this playbook:
+
+		ansible-playbook -i hosts fuse-uninstall.yaml
+
+Inventory (*host* file):
+
+		[fuse-lab-environment]
+		rhel7jboss01
+		rhel7jboss02
+		rhel7jboss03
+
+Playbook (*fuse-undeploy-bundle.yaml* file):
+
+		---
+		- name: Uninstall Playbook of a Fuse Standalone Environment
+		  hosts: fuse-lab-environment
+		  remote_user: cloud-user
+		  gather_facts: true
+		  become: yes
+		  become_user: root
+		  become_method: sudo
+		  roles:
+		    - { role: fuse-uninstall, esb_name: 'esb01' }
+		    - { role: fuse-uninstall, esb_name: 'esb02' }
+
 ### fuse-deploy-bundle role
 
 This role deploys several Application Bundles into a set of Fuse Standalone instances.
@@ -181,10 +252,13 @@ The main tasks done are:
 * Copy artifacts into **{{ fuse_home }}/deploy** folder
 * Install Features repositories (URL)
 * Install Features from URL list of repositories
+* Install OSGi Bundles
 
 #### Configuration parameters
 
 Role's execution could be configured with the following variables.
+
+Global Variables are defined in **group_vars/all.yaml** file.:
 
 * **app_home**: Location to store the applications to be deployed before to do it.
 
@@ -241,7 +315,15 @@ Role's execution could be configured with the following variables.
 		  	artifactId: camel-cxf
 		  	version: 1.1.0-SNAPSHOT
 
-##### Example playbook
+Host Variables are defined in playbook:
+
+* **deploy_features**: Sets if features should be installed in this Fuse Instance. Values: (yes|no). Mandatory.
+
+* **deploy_bundles**: 'Sets if bundles should be installed in this Fuse Instance. Values: (yes|no). Mandatory.
+
+* **deploy_applications**: Sets if applications should be installed in this Fuse Instance. Values: (yes|no). Mandatory.
+
+#### Example playbook
 
 To execute this playbook:
 
@@ -259,16 +341,28 @@ Playbook (*fuse-deploy-bundle.yaml* file):
 		---
 		- name: Fuse Deploy Bundles Playbook
 			hosts: fuse-lab-environment
-			serial: 1
-			remote_user: root
+			serial: 2
+			remote_user: cloud-user
 			gather_facts: true
 			become: yes
 			become_user: root
 			become_method: sudo
 			roles:
 				# Deploying Bundles in Two Fuse Standalone
-				- { role: fuse-deploy-bundle, esb_name: 'esb01' }
-				- { role: fuse-deploy-bundle, esb_name: 'esb02' }
+				- {
+		        role: fuse-deploy-bundle,
+		        esb_name: 'esb01',
+		        deploy_features: 'yes',
+		        deploy_bundles: 'no',
+		        deploy_applications: 'yes'
+		      }
+		    - {
+		        role: fuse-deploy-bundle,
+		        esb_name: 'esb02',
+		        deploy_features: 'yes',
+		        deploy_bundles: 'yes',
+		        deploy_applications: 'yes'
+		      }
 
 ### fuse-undeploy-bundle role
 
@@ -279,10 +373,13 @@ The main tasks done are:
 * Remove artifacts from **{{ fuse_home }}/deploy** folder
 * Uninstall Features from URL list of repositories
 * Uninstall Features repositories (URL)
+* Uninstall OSGi Bundles
 
 #### Configuration parameters
 
 Role's execution could be configured with the following variables.
+
+Global Variables are defined in **group_vars/all.yaml** file.:
 
 * **maven_repository_manager**: Maven Repository location to resolve the artifacts
 	to be deployed.
@@ -330,8 +427,9 @@ Role's execution could be configured with the following variables.
 				artifactId: camel-cxf
 				version: 1.1.0-SNAPSHOT
 
+There aren't host variables to define in this role.
 
-##### Example playbook
+#### Example playbook
 
 To execute this playbook:
 
@@ -349,8 +447,8 @@ Playbook (*fuse-undeploy-bundle.yaml* file):
 		---
 		- name: Fuse Undeploy Bundles Playbook
 			hosts: fuse-lab-environment
-			serial: 1
-			remote_user: root
+			serial: 2
+			remote_user: cloud-user
 			gather_facts: true
 			become: yes
 			become_user: root
@@ -360,75 +458,15 @@ Playbook (*fuse-undeploy-bundle.yaml* file):
 				- { role: fuse-undeploy-bundle, esb_name: 'esb01' }
 				- { role: fuse-undeploy-bundle, esb_name: 'esb02' }
 
-### fuse-uninstall role
-
-This role uninstall several Fuse Standalone instances from inventory host.
-
-The main tasks done are:
-
-* Stop Fuse services
-* Remove OS services
-* Remove Fuse binaries
-
-#### Configuration parameters
-
-Role's execution could be configured with the following variables.
-
-* **user**: OS user to execute the Fuse process.
-
-		# OS User to install/execute Fuse
-		user:
-			name: 'fuse'
-			shell: '/bin/bash'
-			homedir: 'True'
-
-* **fuse_home**: Fuse Home path where it will installed each instance. This
-	variable will be defined for each host with a name. This allow installs more
-	instances in the same hosts.
-
-		# Fuse Home
-		fuse_home: '/opt/fuse/latest-{{ esb_name }}'
-
-Variables are defined in *group_vars/all.yaml* file.
-
-##### Example playbook
-
-To execute this playbook:
-
-		ansible-playbook -i hosts fuse-uninstall-os1.yaml
-
-Inventory (*host* file):
-
-		[fuse-lab-environment]
-		rhel7jboss01
-		rhel7jboss02
-		rhel7jboss03
-
-Playbook (*fuse-undeploy-bundle.yaml* file):
-
-		---
-		- name: Uninstall Playbook of a Fuse Standalone Environment
-		  hosts: fuse-lab-environment
-		  remote_user: cloud-user
-		  gather_facts: true
-		  become: yes
-		  become_user: root
-		  become_method: sudo
-		  roles:
-		    - { role: fuse-uninstall, esb_name: 'esb01' }
-		    - { role: fuse-uninstall, esb_name: 'esb02' }
-		    - { role: fuse-uninstall, esb_name: 'esb03' }
-		    - { role: fuse-uninstall, esb_name: 'esb04' }
-
 ### fuse-patch role
 
-This role patchs several Fuse Standalone instances in a set of hosts.
+This role patches several Fuse Standalone instances in a set of hosts.
 
 The main tasks done are:
 
 * Backup Fuse Standalone instances
 * Install Patch Fuse binaries
-* Simulate and patch Fuse intances with *patch* commands
+* Simulate and patch Fuse instances with *patch* commands
 
 This process is documented in [Patching a Standalone Container](https://access.redhat.com/documentation/en-us/red_hat_jboss_fuse/6.3/html-single/configuring_and_running_jboss_fuse/#ESBRuntimePatchStandalone)
 section of the Red Hat JBoss Fuse Documentation
@@ -437,6 +475,8 @@ section of the Red Hat JBoss Fuse Documentation
 
 Role's execution could be configured with the following variables.
 
+Global Variables are defined in **group_vars/all.yaml** file.:
+
 * **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
 	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
 
@@ -444,6 +484,7 @@ Role's execution could be configured with the following variables.
 		fuse:
 		  version: '6.3.0'
 		  patch: '262'
+			maven_version: '630262'
 
 * **fuse_patch**: Define the Red Hat JBoss Fuse version and patch to patch into the
 	current Fuse Instance runnning. This values will form the path the
@@ -453,25 +494,11 @@ Role's execution could be configured with the following variables.
 		fuse_patch:
 		  version: '6.3.0'
 		  patch: '262'
+			maven_version: '630262'
 
-* **user**: OS user to execute the Fuse process.
+There aren't host variables to define in this role.
 
-		# OS User to install/execute Fuse
-		user:
-			name: 'fuse'
-			shell: '/bin/bash'
-			homedir: 'True'
-
-* **fuse_home**: Fuse Home path where it will installed each instance. This
-	variable will be defined for each host with a name. This allow installs more
-	instances in the same hosts.
-
-		# Fuse Home
-		fuse_home: '/opt/fuse/latest-{{ esb_name }}'
-
-Variables are defined in *group_vars/all.yaml* file.
-
-##### Example playbook
+#### Example playbook
 
 To execute this playbook:
 
@@ -488,8 +515,8 @@ Playbook (*fuse-patch.yaml* file):
 
 		---
 		- name: Patch Playbook of a Fuse Standalone Environment
-			hosts: fuse-lab-os1-server-one
-			serial: 1
+			hosts: fuse-lab-environment
+			serial: 2
 			remote_user: cloud-user
 			gather_facts: true
 			become: yes
@@ -498,10 +525,6 @@ Playbook (*fuse-patch.yaml* file):
 			roles:
 				- { role: fuse-patch, esb_name: 'esb01', port_offset: '0' }
 				- { role: fuse-patch, esb_name: 'esb02', port_offset: '100' }
-				- { role: fuse-patch, esb_name: 'esb03', port_offset: '200' }
-				- { role: fuse-patch, esb_name: 'esb04', port_offset: '300' }
-
-
 
 # Main References
 
