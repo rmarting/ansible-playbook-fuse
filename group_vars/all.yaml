@@ -1,3 +1,8 @@
+#Fuse Instalation Source
+
+binary:
+  folder: '/tmp/'
+
 # Fuse Version and Patch
 fuse:
   version: '6.3.0'
@@ -76,6 +81,16 @@ app_home: '/opt/fuse/applications'
 
 # Maven Repository
 maven_repository_manager: http://192.168.122.212:8081/nexus/content/groups/public
+
+# Maven Repositories Sample
+# maven_repository:
+#   - 
+#     url: 'http://172.16.1.1:8381/artifactory/libs-release' 
+#     id: 'local.release'
+#     extra: ''
+#   - url: 'http://172.16.1.1:8381/artifactory/libs-snapshot'
+#     id: 'local.snapshot'
+#     extra: '@snapshots'
 
 # Camel A-MQ Samples from https://github.com/rmarting/camel-amq-samples/tree/karaf-fuse-6.3.0
 # Camel CXF Samples from https://github.com/rmarting/fuse-demo/tree/karaf-fuse-6.3.0
