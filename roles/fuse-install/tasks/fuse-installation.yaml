@@ -1,7 +1,7 @@
 ---
 - name: Upload Fuse binaries on Server
   copy:
-    src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
+    src: /{{ binary['folder'] }}/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
     dest: /tmp
     force: no
     owner: "{{ user['name'] }}"

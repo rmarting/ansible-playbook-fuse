@@ -42,6 +42,12 @@ These variables will be defined in **groups_vars/all.yaml** file.
 
 These variables are:
 
+* **binary**: to define fuse binary location at your ansible control machine.
+		
+		# Fuse Binary Setting
+		binary:
+  			folder: 'Users/yohanesws/RedHat/Installer/'
+
 * **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
 	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
 
@@ -80,6 +86,21 @@ These variables are:
  	use administrative credentials.
 
 		fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
+		
+* **maven repo**: Maven repository configuration for Fuse to use it.
+
+		#single maven repository
+		maven_repository_manager: http://172.16.1.1:8381/artifactory/libs-snapshot
+
+		#mutiple maven repository
+		maven_repository:
+		- 
+			url: 'http://172.16.1.1:8381/artifactory/libs-release' 
+			id: 'local.release'
+			extra: ''
+		- url: 'http://172.16.1.1:8381/artifactory/libs-snapshot'
+			id: 'local.snapshot'
+			extra: '@snapshots'
 
 ### Host Variables
 

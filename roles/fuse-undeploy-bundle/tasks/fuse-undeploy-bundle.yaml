@@ -1,4 +1,16 @@
 ---
+- name: Remove Applications from {{ app_home }}/ folder
+  become_user: "{{ user['name'] }}"
+  file:
+    path: "{{ app_home }}/{{ item.artifactId }}-{{ item.version }}.jar"
+    state: absent
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items: '{{ applications_undeploy }}'
+  notify:
+    - restart fuse-{{ esb_name }}
+  when: applications_undeploy is defined
+
 - name: Remove Applications from {{ fuse_home }}/deploy folder
   become_user: "{{ user['name'] }}"
   file:
@@ -9,22 +21,35 @@
   with_items: '{{ applications_undeploy }}'
   notify:
     - restart fuse-{{ esb_name }}
+  when: applications_undeploy is defined
 
 - name: Uninstall Features
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'features:uninstall {{ item.name }}'"
+  shell: "source /home/{{ user['name'] }}/.bash_profile; {{ fuse_client}} 'features:uninstall {{ item.name }}'"
+  args:
+      chdir: /home/{{ user['name'] }}
+      executable: /bin/bash
   with_items: '{{ features_undeploy }}'
   notify:
     - restart fuse-{{ esb_name }}
+  when: features_undeploy is defined 
 
 - name: Uninstall Feature Repositories
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'features:removeurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
+  shell: "source /home/{{ user['name'] }}/.bash_profile; {{ fuse_client}} 'features:removeurl mvn:{{ item.groupId }}/{{ item.artifactId }}/{{ item.version }}/xml/features'"
+  args:
+      chdir: /home/{{ user['name'] }}
+      executable: /bin/bash
   with_items: '{{ features_undeploy }}'
+  when: features_undeploy is defined 
 
 - name: Uninstall Bundles
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'osgi:uninstall {{ item.groupId }}.{{ item.artifactId }}/{{ item.version | regex_replace('-', '.')}}'"
+  shell: "source /home/{{ user['name'] }}/.bash_profile; {{ fuse_client}} 'osgi:uninstall {{ item.groupId }}.{{ item.artifactId }}/{{ item.version | regex_replace('-', '.')}}'"
+  args:
+      chdir: /home/{{ user['name'] }}
+      executable: /bin/bash
   with_items: '{{ bundles_undeploy }}'
   notify:
     - restart fuse-{{ esb_name }}
+  when: bundles_undeploy is defined 

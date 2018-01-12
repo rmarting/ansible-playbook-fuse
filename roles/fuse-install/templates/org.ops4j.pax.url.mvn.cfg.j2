@@ -102,7 +102,14 @@ org.ops4j.pax.url.mvn.defaultRepositories=\
 #    @noreleases : the repository does not contain any released artifacts
 #
 org.ops4j.pax.url.mvn.repositories= \
+    {% if maven_repository_manager_item is defined %}
     {{ maven_repository_manager_item | default("") | replace('\n', '') }} \
+    {% endif %}
+    {% if maven_repository is defined %}
+    {% for maven in maven_repository %}
+    {{ maven.url ~ '@id=' ~ maven.id ~ maven.extra ~ ', \\' }}
+    {% endfor %}
+    {% endif %}
     http://repo1.maven.org/maven2@id=maven.central.repo, \
     https://maven.repository.redhat.com/ga@id=redhat.ga.repo, \
     https://maven.repository.redhat.com/earlyaccess/all@id=redhat.ea.repo, \

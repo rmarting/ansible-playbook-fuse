@@ -1,14 +1,25 @@
 ---
+- name: Download Application from Maven Repository SNAPSHOT
+  become_user: "{{ user['name'] }}"
+  maven_artifact:
+    group_id: '{{ item.groupId }}'
+    artifact_id: '{{ item.artifactId }}'
+    version: '{{ item.version }}'
+    repository_url: "{{ maven_repository | selectattr('extra', 'equalto', '@snapshots')| map(attribute='url') | list | first }}"
+    dest: '{{ app_home }}/'
+  with_items: '{{ applications }}'
+  when: applications is defined and ( item['version'].find('SNAPSHOT') != -1 )
+
 - name: Download Application from Maven Repository
   become_user: "{{ user['name'] }}"
   maven_artifact:
     group_id: '{{ item.groupId }}'
     artifact_id: '{{ item.artifactId }}'
     version: '{{ item.version }}'
-    repository_url: '{{ maven_repository_manager }}'
+    repository_url: "{{ maven_repository | selectattr('extra', 'equalto', '')| map(attribute='url') | list | first  }}"
     dest: '{{ app_home }}/'
   with_items: '{{ applications }}'
-  when: applications is defined
+  when: applications is defined and ( item['version'].find('SNAPSHOT') == -1 )
 
 - name: Create Applications Config in {{ fuse_home }}/etc folder
   become_user: "{{ user['name'] }}"
