@@ -1,4 +1,4 @@
-#Fuse Instalation Source
+# Fuse Instalation Source
 
 binary:
   folder: '/tmp/'
@@ -12,8 +12,8 @@ fuse:
 # Patch Fuse Version and Patch
 fuse_patch:
   version: '6.3.0'
-  patch: '262'
-  maven_version: '630262'
+  patch: '347'
+  maven_version: '630347'
 
 # OS User to install/execute Fuse
 user:
@@ -84,8 +84,8 @@ maven_repository_manager: http://192.168.122.212:8081/nexus/content/groups/publi
 
 # Maven Repositories Sample
 # maven_repository:
-#   - 
-#     url: 'http://172.16.1.1:8381/artifactory/libs-release' 
+#   -
+#     url: 'http://172.16.1.1:8381/artifactory/libs-release'
 #     id: 'local.release'
 #     extra: ''
 #   - url: 'http://172.16.1.1:8381/artifactory/libs-snapshot'
