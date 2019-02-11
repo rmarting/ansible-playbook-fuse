@@ -22,6 +22,7 @@ This playbook has tested with the next Ansible versions:
 		ansible 2.2.1.0
 		ansible 2.3.0.0
 		ansible 2.3.1.0
+		ansible 2.7.5
 
 The playbook has to be executed with **root permission**, using the **root user** or
 via **sudo** because it will install packages and configure the hosts.
@@ -46,7 +47,7 @@ These variables are:
 		
 		# Fuse Binary Setting
 		binary:
-  			folder: 'Users/yohanesws/RedHat/Installer/'
+  			folder: '/tmp/'
 
 * **fuse**: Define the Red Hat JBoss Fuse version and patch to install. This values will
 	form the path the the binaries: */tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip*
@@ -54,8 +55,8 @@ These variables are:
 		# Fuse Version and Patch
 		fuse:
 			version: '6.3.0'
-			patch: '254'
-			maven_version: '630262'
+			patch: '356'
+			maven_version: '630356'
 
 * **user**: OS user to execute the Fuse process.
 
@@ -90,15 +91,15 @@ These variables are:
 * **maven repo**: Maven repository configuration for Fuse to use it.
 
 		#single maven repository
-		maven_repository_manager: http://172.16.1.1:8381/artifactory/libs-snapshot
+		maven_repository_manager: http://rh7server02:8081/repository/maven-public/
 
 		#mutiple maven repository
 		maven_repository:
 		- 
-			url: 'http://172.16.1.1:8381/artifactory/libs-release' 
+			url: 'http://rh7server02:8081/repository/maven-releases/'
 			id: 'local.release'
 			extra: ''
-		- url: 'http://172.16.1.1:8381/artifactory/libs-snapshot'
+		- url: 'http://rh7server02:8081/repository/maven-snapshots/'
 			id: 'local.snapshot'
 			extra: '@snapshots'
 
@@ -202,8 +203,8 @@ Playbook (*fuse-install.yaml* file):
 			become_method: sudo
 			roles:
 				# Two Fuse Standalone with a Network of Brokers
-				- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true' }
-				- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'true' }
+				- { role: fuse-install, esb_name: 'esb01',  port_offset: '0', nob: 'true', amq_master_slave: 'true' }
+				- { role: fuse-install, esb_name: 'esb02',  port_offset: '100', nob: 'true', amq_master_slave: 'true' }
 
 Other alternatives:
 
@@ -290,7 +291,7 @@ Global Variables are defined in **group_vars/all.yaml** file.:
 	to be deployed.
 
 		# Maven Repository
-		maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
+		maven_repository_manager: http://rh7server02:8081/repository/maven-public/
 
 * **applications**: List of Maven dependencies to be deployed. The artifacts should
 	be located using their GAV coordinates.
@@ -406,7 +407,7 @@ Global Variables are defined in **group_vars/all.yaml** file.:
 	to be deployed.
 
 		# Maven Repository
-		maven_repository_manager: http://rhel7jboss01:8081/nexus/content/groups/public
+		maven_repository_manager: http://rh7server02:8081/repository/maven-public/
 
 * **applications_undeploy**: List of Maven dependencies to be undeployed. The artifacts should
 	be located using their GAV coordinates.
@@ -504,8 +505,8 @@ Global Variables are defined in **group_vars/all.yaml** file.:
 		# Fuse Version and Patch
 		fuse:
 		  version: '6.3.0'
-		  patch: '262'
-			maven_version: '630262'
+		  patch: '356'
+			maven_version: '630356'
 
 * **fuse_patch**: Define the Red Hat JBoss Fuse version and patch to patch into the
 	current Fuse Instance runnning. This values will form the path the
@@ -514,8 +515,8 @@ Global Variables are defined in **group_vars/all.yaml** file.:
 		# Patch Fuse Version and Patch
 		fuse_patch:
 		  version: '6.3.0'
-		  patch: '262'
-			maven_version: '630262'
+		  patch: '371'
+			maven_version: '630371'
 
 There aren't host variables to define in this role.
 
@@ -549,7 +550,9 @@ Playbook (*fuse-patch.yaml* file):
 
 # Main References
 
-* [Product Documentation for Red Hat JBoss Fuse](https://access.redhat.com/documentation/en/red-hat-jboss-fuse/)
+* [Product Documentation for Red Hat Fuse 6.3](https://access.redhat.com/documentation/en-us/red_hat_fuse/6.3/)
+* [Fuse Maintenance Schedule](https://access.redhat.com/articles/2939351#header63)
 * [Ansible Documentation](http://docs.ansible.com/ansible/)
 * [How to remove the embedded ActiveMQ Broker from being deployed in JBoss Fuse?](https://access.redhat.com/solutions/1229533)
 * [ActiveMQ - Network of Brokers](http://activemq.apache.org/networks-of-brokers.html)
+* [JBoss Enterprise Maven Repository](https://access.redhat.com/maven-repository)
