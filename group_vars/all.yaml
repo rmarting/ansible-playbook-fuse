@@ -6,14 +6,14 @@ binary:
 # Fuse Version and Patch
 fuse:
   version: '6.3.0'
-  patch: '262'
-  maven_version: '630262'
+  patch: '356'
+  maven_version: '630356'
 
 # Patch Fuse Version and Patch
 fuse_patch:
   version: '6.3.0'
-  patch: '347'
-  maven_version: '630347'
+  patch: '371'
+  maven_version: '630371'
 
 # OS User to install/execute Fuse
 user:
@@ -80,7 +80,7 @@ fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.usern
 app_home: '/opt/fuse/applications'
 
 # Maven Repository
-maven_repository_manager: http://192.168.122.212:8081/nexus/content/groups/public
+maven_repository_manager: http://rh7server02:8081/repository/maven-public/
 
 # Maven Repositories Sample
 # maven_repository:
