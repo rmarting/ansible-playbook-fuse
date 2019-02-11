@@ -14,9 +14,10 @@
 
 - name: Install Requirements and Dependencies
   yum:
-    name: "{{ item }}"
+    name: "{{ packages }}"
     state: present
-  with_items:
+  vars:
+    packages:
     - unzip
     - java-1.8.0-openjdk
     - vim
