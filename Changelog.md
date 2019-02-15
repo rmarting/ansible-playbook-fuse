@@ -1,6 +1,15 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [0.0.7] - 15/02/2019
+### Added
+  * Upgrade to Fuse 7.2
+
+### Changed
+  * Documentation
+
+### Removed
+
 ## [0.0.6] - 07/06/2017 - Sixth Release
 ### Added
   * Identify maven version of the product in some templates using the global
