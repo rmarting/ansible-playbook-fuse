@@ -5,15 +5,17 @@ binary:
 
 # Fuse Version and Patch
 fuse:
-  version: '6.3.0'
-  patch: '262'
-  maven_version: '630262'
+  version: '7.2.0'
+  patch: '035'
+  full_version: '720035'
+  maven_version: '00001'
 
 # Patch Fuse Version and Patch
 fuse_patch:
-  version: '6.3.0'
-  patch: '347'
-  maven_version: '630347'
+  version: '7.2.0'
+  patch: '035'
+  full_version: '720035'
+  maven_version: '00001'
 
 # OS User to install/execute Fuse
 user:
@@ -27,11 +29,11 @@ user:
 java_home: /usr/lib/jvm/jre-1.8.0-openjdk
 
 # Fuse Home
-fuse_base: '/opt/fuse'
+fuse_base: '/opt/fuse7'
 fuse_home: '{{ fuse_base }}/latest-{{ esb_name }}'
 
 # Backups Paths
-fuse_backup_path: /opt/fuse/backup
+fuse_backup_path: '{{ fuse_base }}/backup'
 
 # Fuse Administrative Users
 fuse_users:
@@ -39,21 +41,17 @@ fuse_users:
     username: admin
     password: karaf
     roles:
+      - group
       - admin
       - manager
       - viewer
-      - Monitor
-      - Operator
-      - Maintainer
-      - Deployer
-      - Auditor
-      - Administrator
-      - SuperUser
+      - systembundles
+      - ssh
   deployer:
     username: deployer
     password: deployer
     roles:
-      - Deployer
+      - manager
   guest:
     username: guest
     password: guest
@@ -64,31 +62,25 @@ fuse_users:
     password: karaf
     roles:
       - viewer
-      - Administrator
-
-# Network of Brokers Multicast
-nob_multicast_name: default
-
-# KahaDB persistence store
-kahadb_directory: /opt/fuse/kahadb
+      - admin
 
 ## Setup for Applications and Bundles
 
 fuse_client: '{{ fuse_home }}/bin/client -r 3 -d 10 -u {{ fuse_users.admin.username }} -p {{ fuse_users.admin.password }}'
 
 # Applications Home
-app_home: '/opt/fuse/applications'
+app_home: '{{ fuse_base }}/applications'
 
 # Maven Repository
-maven_repository_manager: http://192.168.122.212:8081/nexus/content/groups/public
+maven_repository_manager: http://rh7server02:8081/repository/maven-public
 
 # Maven Repositories Sample
 # maven_repository:
 #   -
-#     url: 'http://172.16.1.1:8381/artifactory/libs-release'
+#     url: 'http://rh7server02:8081/repository/maven-releases'
 #     id: 'local.release'
 #     extra: ''
-#   - url: 'http://172.16.1.1:8381/artifactory/libs-snapshot'
+#   - url: 'http://rh7server02:8081/repository/maven-snapshots'
 #     id: 'local.snapshot'
 #     extra: '@snapshots'
 

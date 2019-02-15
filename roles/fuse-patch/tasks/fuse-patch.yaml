@@ -41,7 +41,7 @@
 
 - name: Add Patch into Fuse Standalone Instance
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'patch:add file:///tmp/jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}.zip'"
+  command: "{{ fuse_client }} 'patch:add file:///tmp/jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}.zip'"
   register: fuse_patch_add_output
 
 - name: Display Fuse Patch Add Command
@@ -50,7 +50,7 @@
 
 - name: Simulate Patch
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'patch:simulate jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
+  command: "{{ fuse_client }} 'patch:simulate jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
   register: fuse_patch_simulate_output
 
 # - name: Display Fuse Patch Add Command
@@ -59,7 +59,7 @@
 
 - name: Install Patch
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'patch:install jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
+  command: "{{ fuse_client }} 'patch:install jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}'"
   register: fuse_patch_install_output.stdout_lines
 
 # - name: Display Fuse Patch Add Command
@@ -79,7 +79,7 @@
 
 - name: Validate Patch Installed
   become_user: "{{ user['name'] }}"
-  command: "{{ fuse_client}} 'patch:list | grep jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}' | grep root"
+  command: "{{ fuse_client }} 'patch:list | grep jboss-fuse-karaf-{{ fuse_patch['version'] }}.redhat-{{ fuse_patch['patch'] }}' | grep root"
   register: fuse_patch_list_output
 
 - name: Display Fuse Patch Installed as root

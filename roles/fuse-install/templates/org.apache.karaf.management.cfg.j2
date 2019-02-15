@@ -1,3 +1,4 @@
+
 ################################################################################
 #
 #    Licensed to the Apache Software Foundation (ASF) under one or more
@@ -29,6 +30,7 @@ rmiRegistryPort = {{ (1099|int + port_offset|int)|abs }}
 #
 # Host for RMI registry
 #
+# rmiRegistryHost = 127.0.0.1
 rmiRegistryHost = 0.0.0.0
 
 #
@@ -39,6 +41,7 @@ rmiServerPort = {{ (44444|int + port_offset|int)|abs }}
 #
 # Host for RMI server
 #
+# rmiServerHost = 127.0.0.1
 rmiServerHost = 0.0.0.0
 
 #
@@ -65,3 +68,58 @@ threaded = true
 # The ObjectName used to register the JMXConnectorServer
 #
 objectName = connector:name=rmi
+
+#
+# Timeout to lookup for the keystore in case of SSL authentication usage
+#
+#keyStoreAvailabilityTimeout = 5000
+
+#
+# The type of authentication
+#
+#authenticatorType = password
+
+#
+# Enable or not SSL/TLS
+#
+#secured = false
+
+#
+# Secure algorithm to use
+#
+#secureAlgorithm = default
+
+#
+# Secure protocol to use
+#
+#secureProtocol = TLS
+
+#
+# Keystore to use for secure mode
+#
+#keyStore = karaf.ks
+
+#
+# Alias of the key to use in the keystore
+#
+#keyAlias = karaf
+
+#
+# Truststore to use for secure mode
+#
+#trustStore = karaf.ts
+
+#
+# Create the JMX RMI registry
+#
+#createRmiRegistry = true
+
+#
+# Locate the JMX RMI registry
+#
+#locateRmiRegistry = true
+
+#
+# Locate an existing MBean server if possible (usefull when Karaf is embedded)
+#
+#locateExistingMBeanServerIfPossible = true

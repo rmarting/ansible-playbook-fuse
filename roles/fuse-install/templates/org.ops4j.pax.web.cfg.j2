@@ -1,5 +1,5 @@
 #
-#  Copyright 2005-2016 Red Hat, Inc.
+#  Copyright 2005-2018 Red Hat, Inc.
 #
 #  Red Hat licenses this file to you under the Apache License, version
 #  2.0 (the "License"); you may not use this file except in compliance
@@ -14,20 +14,9 @@
 #  permissions and limitations under the License.
 #
 
+org.osgi.service.http.port = {{ (8181|int + port_offset|int)|abs }}
 
-org.ops4j.pax.web.config.file=etc/jetty.xml
+org.ops4j.pax.web.config.file = ${karaf.etc}/undertow.xml
+org.ops4j.pax.web.session.cookie.httpOnly = true
 
-# http
-org.osgi.service.http.port={{ (8181|int + port_offset|int)|abs }}
-org.ops4j.pax.web.session.cookie.httpOnly=true
-# org.osgi.service.http.enabled=true
-
-# https
-# org.osgi.service.http.secure.enabled=true
-org.osgi.service.http.port.secure={{ (8443|int + port_offset|int)|abs }}
-
-# configure keystore
-# org.ops4j.pax.web.ssl.keystore=AbsolutePathToKeystoreFile
-# org.ops4j.pax.web.ssl.keystore.type=jks
-# org.ops4j.pax.web.ssl.password=your_keystore_password
-# org.ops4j.pax.web.ssl.keypassword=password_for_key_in_your_keystore
+javax.servlet.context.tempdir = ${karaf.data}/pax-web-jsp

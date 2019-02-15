@@ -1,7 +1,7 @@
 ---
 - name: Upload Fuse binaries on Server
   copy:
-    src: /{{ binary['folder'] }}/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
+    src: /{{ binary['folder'] }}/fuse-karaf-{{ fuse['version'] }}.fuse-{{ fuse['full_version'] }}-redhat-{{ fuse['maven_version'] }}.zip
     dest: /tmp
     force: no
     owner: "{{ user['name'] }}"
@@ -25,16 +25,23 @@
 
 - name: Install Fuse binaries on Server
   unarchive:
-    src: /tmp/jboss-fuse-karaf-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}.zip
+    src: /tmp/fuse-karaf-{{ fuse['version'] }}.fuse-{{ fuse['full_version'] }}-redhat-{{ fuse['maven_version'] }}.zip
     dest: '{{ fuse_base }}/{{ esb_name }}'
     remote_src: true
     keep_newer: yes
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
 
+- name: Change owner of Fuse binaries
+  file:
+    dest: '{{ fuse_base }}/{{ esb_name }}'
+    recurse: yes
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+
 - name: Link current version to installed version
   file:
-    src: "{{ fuse_base }}/{{ esb_name }}/jboss-fuse-{{ fuse['version'] }}.redhat-{{ fuse['patch'] }}"
+    src: "{{ fuse_base }}/{{ esb_name }}/fuse-karaf-{{ fuse['version'] }}.fuse-{{ fuse['full_version'] }}-redhat-{{ fuse['maven_version'] }}"
     dest: '{{ fuse_base }}/latest-{{ esb_name }}'
     state: link
     owner: "{{ user['name'] }}"
@@ -43,9 +50,9 @@
 - name: Install systemd unit file
   template:
     src: fuse.service.j2
-    dest: /etc/systemd/system/fuse-{{ esb_name }}.service
+    dest: /etc/systemd/system/fuse7-{{ esb_name }}.service
     owner: root
     mode: 644
   notify:
     - reload systemd
-    - restart fuse-{{ esb_name }}
+    - restart fuse7-{{ esb_name }}

@@ -55,15 +55,6 @@
       {{ maven_repository_manager }}@snapshots@id=esb-maven, \
   when: (maven_repository_manager is defined)
 
-- name: Set up Fabric Maven Agent
-  template:
-    src: "{{ item }}"
-    dest: "{{ fuse_home }}/etc/io.fabric8.maven.cfg"
-    owner: "{{ user['name'] }}"
-    group: "{{ user['name'] }}"
-  with_items:
-    - 'io.fabric8.maven.cfg.j2'
-
 - name: Set up OPS4J maven Agent
   template:
     src: "{{ item }}"
@@ -73,39 +64,14 @@
   with_items:
     - 'org.ops4j.pax.url.mvn.cfg.j2'
 
-- name: Set up A-MQ server broker configuration
+- name: Set up Maven Settings
   template:
     src: "{{ item }}"
-    dest: "{{ fuse_home }}/etc/io.fabric8.mq.fabric.server-broker.cfg"
+    dest: "{{ fuse_home }}/etc/maven-settings.xml"
     owner: "{{ user['name'] }}"
     group: "{{ user['name'] }}"
   with_items:
-    - 'io.fabric8.mq.fabric.server-broker.cfg.j2'
-
-- name: Defining Network of Brokers configuration
-  set_fact:
-    nob_discovery_uri: |
-      discoveryUri="multicast://{{ nob_multicast_name }}"
-    nob_connector_uri: |
-      <networkConnector uri="multicast://{{ nob_multicast_name }}" userName="{{ fuse_users.amq.username }}" password="{{ fuse_users.amq.password }}" />
-    nob_defined: true
-  when: (nob is defined and nob == "true")
-
-- name: Unsetting Network of Brokers configuration
-  set_fact:
-    nob_discovery_uri: ""
-    nob_connector_uri: ""
-    nob_defined: false
-  when: (nob is undefined) or (nob is defined and nob == "false")
-
-- name: Set up A-MQ Broker
-  template:
-    src: "{{ item }}"
-    dest: "{{ fuse_home }}/etc/activemq.xml"
-    owner: "{{ user['name'] }}"
-    group: "{{ user['name'] }}"
-  with_items:
-    - 'activemq.xml.j2'
+    - 'maven-settings.xml.j2'
 
 - name: Set up Custom Properties
   template:
@@ -124,3 +90,12 @@
     line: "{{ item.value.username ~ '=' ~ item.value.password ~ ',' ~ item.value.roles | join(',') }}"
     insertbefore: EOF
   with_dict: "{{ fuse_users }}"
+
+- name: Set up Jolokia Access
+  template:
+    src: "{{ item }}"
+    dest: "{{ fuse_home }}/etc/jolokia-access.xml"
+    owner: "{{ user['name'] }}"
+    group: "{{ user['name'] }}"
+  with_items:
+    - 'jolokia-access.xml.j2'

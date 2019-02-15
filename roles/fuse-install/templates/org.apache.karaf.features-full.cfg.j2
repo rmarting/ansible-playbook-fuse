@@ -1,97 +1,130 @@
+################################################################################
 #
-#  Copyright 2005-2016 Red Hat, Inc.
+#    Licensed to the Apache Software Foundation (ASF) under one or more
+#    contributor license agreements.  See the NOTICE file distributed with
+#    this work for additional information regarding copyright ownership.
+#    The ASF licenses this file to You under the Apache License, Version 2.0
+#    (the "License"); you may not use this file except in compliance with
+#    the License.  You may obtain a copy of the License at
 #
-#  Red Hat licenses this file to you under the Apache License, version
-#  2.0 (the "License"); you may not use this file except in compliance
-#  with the License.  You may obtain a copy of the License at
+#       http://www.apache.org/licenses/LICENSE-2.0
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
 #
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-#  implied.  See the License for the specific language governing
-#  permissions and limitations under the License.
-#
+################################################################################
 
 #
 # Comma separated list of features repositories to register by default
 #
-featuresRepositories=\
-        mvn:org.apache.karaf.assemblies.features/standard/2.4.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.apache.karaf.assemblies.features/spring/2.4.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.apache.karaf.assemblies.features/enterprise/2.4.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.apache.cxf.karaf/apache-cxf/3.1.5.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.apache.camel.karaf/apache-camel/2.17.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.apache.activemq/activemq-karaf/5.11.0.redhat-{{ fuse['maven_version'] }}/xml/features-core,\
-        mvn:io.fabric8/fabric8-karaf/1.2.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.jboss.fuse/jboss-fuse/6.3.0.redhat-{{ fuse['patch'] }}/xml/features,\
-        mvn:io.fabric8.patch/patch-features/1.2.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:io.hawt/hawtio-karaf/1.4.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:io.fabric8.support/support-features/1.2.0.redhat-{{ fuse['maven_version'] }}/xml/features,\
-        mvn:org.fusesource/camel-sap/6.3.0.redhat-{{ fuse['patch'] }}/xml/features,\
-        mvn:org.switchyard.karaf/switchyard/2.1.0.redhat-{{ fuse['maven_version'] }}/xml/core-features
+featuresRepositories = \
+    mvn:org.apache.cxf.karaf/apache-cxf/3.1.11.fuse-720057-redhat-00001/xml/features, \
+    mvn:org.fusesource/camel-sap/7.2.0.fuse-720046-redhat-00001/xml/features, \
+    mvn:org.apache.camel.karaf/apache-camel/2.21.0.fuse-720050-redhat-00001/xml/features, \
+    mvn:org.jboss.fuse.modules.patch/patch-features/7.2.0.fuse-720035-redhat-00001/xml/features, \
+    mvn:org.apache.karaf.features/enterprise/4.2.0.fuse-720061-redhat-00001/xml/features, \
+    mvn:org.apache.activemq/artemis-features/2.4.0.amq-711002-redhat-1/xml/features, \
+    mvn:org.apache.karaf.features/standard/4.2.0.fuse-720061-redhat-00001/xml/features, \
+    mvn:org.jboss.fuse/fuse-karaf-framework/7.2.0.fuse-720035-redhat-00001/xml/features, \
+    mvn:io.hawt/hawtio-karaf/2.0.0.fuse-720044-redhat-00001/xml/features, \
+    mvn:org.fusesource/activemq-karaf/7.2.0.fuse-720046-redhat-00001/xml/features, \
+    mvn:org.apache.karaf.features/framework/4.2.0.fuse-720061-redhat-00001/xml/features, \
+    mvn:org.apache.karaf.features/spring-legacy/4.2.0.fuse-720061-redhat-00001/xml/features, \
+    mvn:org.apache-extras.camel-extra.karaf/camel-extra/2.21.0.fuse-720050-redhat-00001/xml/features
 
 #
 # Comma separated list of features to install at startup
 #
-featuresBoot=\
-        jasypt-encryption,\
-        pax-url-classpath,\
-        deployer,\
-        config,\
-        management,\
-        fabric-cxf,\
-        fabric,\
-        fabric-maven-proxy,\
-        patch,\
-        transaction,\
-        jms-spec;version=2.0,\
-        mq-fabric,\
-        swagger,\
-        camel,\
-        camel-cxf,\
-        camel-jms,\
-        camel-amq,\
-        camel-blueprint,\
-        camel-csv,\
-        camel-ftp,\
-        camel-bindy,\
-        camel-jdbc,\
-        camel-exec,\
-        camel-jasypt,\
-        camel-saxon,\
-        camel-snmp,\
-        camel-ognl,\
-        camel-routebox,\
-        camel-script,\
-        camel-spring-javaconfig,\
-        camel-jaxb,\
-        camel-jmx,\
-        camel-mail,\
-        camel-paxlogging,\
-        camel-rmi,\
-        war,\
-        fabric-redirect,\
-        hawtio-offline,\
-        support,\
-        hawtio-redhat-fuse-branding,\
-        jsr-311
-
-featuresBlackList=\
-        pax-cdi-openwebbeans,\
-        pax-cdi-web-openwebbeans,\
-        spring-struts,\
-        cxf-bean-validation-java6,\
-        pax-cdi-1.2-web,\
-        pax-jsf-support,\
-        camel-ignite,\
-        camel-jetty8,\
-        camel-ironmq,\
-        camel-gae,\
-        camel-hbase
+featuresBoot = \
+    instance/4.2.0.fuse-720061-redhat-00001, \
+    cxf-commands/3.1.11.fuse-720057-redhat-00001, \
+    log/4.2.0.fuse-720061-redhat-00001, \
+    pax-cdi-weld/1.0.0, \
+    ssh/4.2.0.fuse-720061-redhat-00001, \
+    camel-cxf/2.21.0.fuse-720050-redhat-00001, \
+    aries-blueprint/4.2.0.fuse-720061-redhat-00001, \
+    cxf/3.1.11.fuse-720057-redhat-00001, \
+    cxf-http-undertow/3.1.11.fuse-720057-redhat-00001, \
+    patch/7.2.0.fuse-720035-redhat-00001, \
+    cxf-rs-description-swagger2/3.1.11.fuse-720057-redhat-00001, \
+    feature/4.2.0.fuse-720061-redhat-00001, \
+    camel/2.21.0.fuse-720050-redhat-00001, \
+    jaas/4.2.0.fuse-720061-redhat-00001, \
+    camel-jaxb/2.21.0.fuse-720050-redhat-00001, \
+    camel-paxlogging/2.21.0.fuse-720050-redhat-00001, \
+    deployer/4.2.0.fuse-720061-redhat-00001, \
+    diagnostic/4.2.0.fuse-720061-redhat-00001, \
+    patch-management/7.2.0.fuse-720035-redhat-00001, \
+    bundle/4.2.0.fuse-720061-redhat-00001, \
+    kar/4.2.0.fuse-720061-redhat-00001, \
+    camel-csv/2.21.0.fuse-720050-redhat-00001, \
+    package/4.2.0.fuse-720061-redhat-00001, \
+    scr/4.2.0.fuse-720061-redhat-00001, \
+    maven/4.2.0.fuse-720061-redhat-00001, \
+    war/4.2.0.fuse-720061-redhat-00001, \
+    camel-mail/2.21.0.fuse-720050-redhat-00001, \
+    fuse-credential-store/7.2.0.fuse-720035-redhat-00001, \
+    framework/4.2.0.fuse-720061-redhat-00001, \
+    system/4.2.0.fuse-720061-redhat-00001, \
+    pax-http-undertow/7.2.3, \
+    camel-jdbc/2.21.0.fuse-720050-redhat-00001, \
+    fuse-javaee-apis/7.2.0.fuse-720035-redhat-00001, \
+    shell/4.2.0.fuse-720061-redhat-00001, \
+    management/4.2.0.fuse-720061-redhat-00001, \
+    service/4.2.0.fuse-720061-redhat-00001, \
+    camel-undertow/2.21.0.fuse-720050-redhat-00001, \
+    camel-blueprint/2.21.0.fuse-720050-redhat-00001, \
+    camel-spring/2.21.0.fuse-720050-redhat-00001, \
+    hawtio/2.0.0.fuse-720044-redhat-00001, \
+    camel-ftp/2.21.0.fuse-720050-redhat-00001, \
+    wrap/2.5.4.redhat-1, \
+    config/4.2.0.fuse-720061-redhat-00001, \
+    transaction-manager-narayana/5.7.2.Final
 
 #
-# Respect start-level when starting bundles
+# Resource repositories (OBR) that the features resolver can use
+# to resolve requirements/capabilities
 #
-respectStartLvlDuringFeatureStartup=true
+# The format of the resourceRepositories is 
+# resourceRepositories=[xml:url|json:url],...
+# for Instance:
+#
+#resourceRepositories=xml:http://host/path/to/index.xml
+# or
+#resourceRepositories=json:http://host/path/to/index.json
+#
+
+#
+# Defines if the boot features are started in asynchronous mode (in a dedicated thread)
+#
+featuresBootAsynchronous=false
+
+#
+# Service requirements enforcement
+#
+# By default, the feature resolver checks the service requirements/capabilities of
+# bundles for new features (xml schema >= 1.3.0) in order to automatically installs
+# the required bundles.
+# The following flag can have those values:
+#   - disable: service requirements are completely ignored
+#   - default: service requirements are ignored for old features
+#   - enforce: service requirements are always verified
+#
+#serviceRequirements=default
+
+#
+# Store cfg file for config element in feature
+#
+#configCfgStore=true
+
+#
+# Configuration of features processing mechanism (overrides, blacklisting, modification of features)
+# XML file defines instructions related to features processing
+# versions.properties may declare properties to resolve placeholders in XML file
+# both files are relative to ${karaf.etc}
+#
+#featureProcessing=org.apache.karaf.features.xml
+#featureProcessingVersions=versions.properties

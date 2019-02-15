@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   authors:  Roman Martin Gil (roman.martin@redhat.com)
-  description: Fuse Installation Role
+  description: Red Hat Fuse 7 Installation Role
   company: Red Hat
   license: TBD
   min_ansible_version: 2.2.1.0

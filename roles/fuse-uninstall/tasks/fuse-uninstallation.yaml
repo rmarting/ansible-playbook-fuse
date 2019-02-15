@@ -1,21 +1,21 @@
 ---
 - name: Check if Fuse Service Exists
   stat:
-    path: /etc/systemd/system/fuse-{{ esb_name }}.service
-  register: 'fuse_{{ esb_name | replace("-", "_") }}_service_status'
+    path: /etc/systemd/system/fuse7-{{ esb_name }}.service
+  register: 'fuse7_{{ esb_name | replace("-", "_") }}_service_status'
 
 - name: Stop Fuse Service
   service:
-    name: fuse-{{ esb_name }}
+    name: fuse7-{{ esb_name }}
     state: stopped
-  when: 'fuse_{{ esb_name | replace("-", "_") }}_service_status.stat.exists'
+  when: 'fuse7_{{ esb_name | replace("-", "_") }}_service_status.stat.exists'
 
 - name: Uninstall systemd unit file
   file:
-    path: /etc/systemd/system/fuse-{{ esb_name }}.service
+    path: /etc/systemd/system/fuse7-{{ esb_name }}.service
     owner: root
     state: absent
-  when: 'fuse_{{ esb_name | replace("-", "_") }}_service_status.stat.exists'
+  when: 'fuse7_{{ esb_name | replace("-", "_") }}_service_status.stat.exists'
   notify:
     - reload systemd
 

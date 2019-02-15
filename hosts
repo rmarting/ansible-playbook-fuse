@@ -1,3 +1,4 @@
 [fuse-lab-environment]
-rhel7jboss01
-rhel7jboss03
+rh7server01
+# rh7server02
+rh7server03
